@@ -27,21 +27,17 @@ public partial class DepartmentManagementWindow : Window
         {
             using var db = new AppDbContext();
             
-            // Загружаем факультеты для фильтра и комбобокса
             _faculties = await db.Faculties.AsNoTracking().ToListAsync();
             
-            // Загружаем кафедры с включением факультетов
             _departments = await db.Departments
                 .Include(d => d.Faculty)
                 .AsNoTracking()
                 .ToListAsync();
 
-            // Заполняем комбобокс факультетов
             FacultyFilterComboBox.ItemsSource = _faculties;
             FacultyFilterComboBox.DisplayMemberPath = "Name";
             FacultyFilterComboBox.SelectedValuePath = "Id";
             
-            // Добавляем "Все факультеты"
             var allOption = new Faculty { Id = 0, Name = "Все факультеты" };
             var facultiesWithAll = new List<Faculty> { allOption };
             facultiesWithAll.AddRange(_faculties);
@@ -52,7 +48,6 @@ public partial class DepartmentManagementWindow : Window
             FacultyComboBox.DisplayMemberPath = "Name";
             FacultyComboBox.SelectedValuePath = "Id";
 
-            // Загружаем данные в грид
             RefreshDataGrid();
         }
         catch (Exception ex)
@@ -165,14 +160,12 @@ public partial class DepartmentManagementWindow : Window
 
             if (_selectedDepartment == null)
             {
-                // Проверка уникальности кода
                 if (await db.Departments.AnyAsync(d => d.Code == DepartmentCodeTextBox.Text.Trim()))
                 {
                     MessageBox.Show("Кафедра с таким кодом уже существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                // Создание новой кафедры
                 var newDepartment = new Department
                 {
                     Name = DepartmentNameTextBox.Text.Trim(),
@@ -183,14 +176,12 @@ public partial class DepartmentManagementWindow : Window
             }
             else
             {
-                // Проверка уникальности кода (исключая текущую кафедру)
                 if (await db.Departments.AnyAsync(d => d.Code == DepartmentCodeTextBox.Text.Trim() && d.Id != _selectedDepartment.Id))
                 {
                     MessageBox.Show("Кафедра с таким кодом уже существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                // Обновление существующей кафедры
                 var department = await db.Departments.FindAsync(_selectedDepartment.Id);
                 if (department != null)
                 {

@@ -12,7 +12,6 @@ public partial class App : Application
 
         AppLogger.Info("=== ПРИЛОЖЕНИЕ ЗАПУЩЕНО ===");
 
-        // Обработка ошибок в UI-потоке
         this.DispatcherUnhandledException += (s, args) =>
         {
             AppLogger.Error("💥 DispatcherUnhandledException", args.Exception);
@@ -27,7 +26,6 @@ public partial class App : Application
             AppLogger.Info("Открываю LoginWindow...");
             var loginWindow = new LoginWindow();
             
-            // На старте не закрываем всё приложение при закрытии LoginWindow (ShowDialog)
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             
             bool? result = loginWindow.ShowDialog();
@@ -38,8 +36,6 @@ public partial class App : Application
             {
                 AppLogger.Info("Вход успешен, создаю MainWindow...");
                 var mainWindow = new MainWindow();
-                // После успешного входа закрываем приложение при закрытии главного окна,
-                // чтобы процесс не оставался висеть в фоне.
                 this.MainWindow = mainWindow;
                 this.ShutdownMode = ShutdownMode.OnMainWindowClose;
                 AppLogger.Info("MainWindow создан, вызываю Show()...");

@@ -11,7 +11,6 @@ public partial class LoginWindow : Window
     {
         InitializeComponent();
         
-        // Обработка нажатия Enter
         KeyDown += (s, e) =>
         {
             if (e.Key == Key.Return)
@@ -44,7 +43,6 @@ public partial class LoginWindow : Window
             LoginButton.Content = "Вход...";
             ErrorText.Text = "";
 
-            // Используем AuthService для аутентификации
             var result = await AuthService.LoginAsync(login, password);
 
             if (result.Success)

@@ -118,7 +118,7 @@ namespace UniversitySystem {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/UniversitySystem;component/disciplinemanagementwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/UniversitySystem;V1.0.0.0;component/disciplinemanagementwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\DisciplineManagementWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -30,12 +30,10 @@ public partial class SimpleMainMenuWindow : Window
 
     private void SetupPermissions()
     {
-        // Скрываем кнопки в зависимости от роли
         var role = RbacService.CurrentUserRole;
         
         if (role != "Admin")
         {
-            // Скрываем админские кнопки для не-админов
             BtnManageFaculties.Visibility = Visibility.Collapsed;
             BtnManageDepartments.Visibility = Visibility.Collapsed;
             BtnManageGroups.Visibility = Visibility.Collapsed;
@@ -46,14 +44,12 @@ public partial class SimpleMainMenuWindow : Window
 
         if (role != "Teacher" && role != "Admin")
         {
-            // Скрываем преподавательские кнопки для студентов
             BtnManageGrades.Visibility = Visibility.Collapsed;
             BtnViewSchedule.Visibility = Visibility.Collapsed;
             BtnViewGrades.Visibility = Visibility.Collapsed;
         }
     }
 
-    // Обработчики кнопок администратора
     private void BtnManageFaculties_Click(object sender, RoutedEventArgs e)
     {
         var window = new FacultyManagementWindow();
@@ -96,7 +92,6 @@ public partial class SimpleMainMenuWindow : Window
         window.ShowDialog();
     }
 
-    // Обработчики кнопок преподавателя
     private void BtnManageGrades_Click(object sender, RoutedEventArgs e)
     {
         var window = new GradeManagementWindow();
@@ -118,7 +113,6 @@ public partial class SimpleMainMenuWindow : Window
         window.ShowDialog();
     }
 
-    // Обработчики кнопок отчетов
     private void BtnReports_Click(object sender, RoutedEventArgs e)
     {
         var window = new ReportsWindow();

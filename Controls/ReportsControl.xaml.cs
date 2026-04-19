@@ -111,7 +111,6 @@ namespace UniversitySystem.Controls
                 GoodCount.Text = report.Count(r => r.Status == "Хорошист").ToString();
                 FailCount.Text = report.Count(r => r.Status == "Должник").ToString();
 
-                // Update average grade text
                 var overallAvg = report.Count > 0 ? report.Average(r => r.AvgGrade) : 0;
                 TxtAverageGrade.Text = overallAvg.ToString("F2");
             }
@@ -130,7 +129,6 @@ namespace UniversitySystem.Controls
                 using var db = new AppDbContext();
                 int facultyId = (FacultyFilter.SelectedItem as Faculty)?.Id ?? 0;
 
-                // Get all departments and groups for this faculty
                 var departments = await db.Departments
                     .Where(d => d.FacultyId == facultyId)
                     .AsNoTracking()
@@ -162,7 +160,6 @@ namespace UniversitySystem.Controls
 
                 var facultyName = (FacultyFilter.SelectedItem as Faculty)?.Name ?? "";
 
-                // Group report by department
                 var report = departments.Select(d =>
                 {
                     var deptGroups = groups.Where(g => g.DepartmentId == d.Id).ToList();
@@ -181,7 +178,6 @@ namespace UniversitySystem.Controls
 
                 FacultyReportDataGrid.ItemsSource = report;
 
-                // Update totals
                 TxtFacultyTotalGroups.Text = groups.Count.ToString();
                 TxtFacultyTotalStudents.Text = students.Count.ToString();
                 var overallAvg = report.Count > 0 ? report.Average(r => r.AvgGrade) : 0;

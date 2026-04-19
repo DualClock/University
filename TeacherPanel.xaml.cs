@@ -91,12 +91,10 @@ public partial class TeacherPanel : UserControl
 
     private async void DgGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Обработка выбора группы (если нужно)
     }
 
     private async void CmbDebtorsGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Optional: filter disciplines based on selected group
     }
 
     private async void BtnAddGrade_Click(object sender, RoutedEventArgs e)
@@ -130,7 +128,6 @@ public partial class TeacherPanel : UserControl
             db.Grades.Add(grade);
             await db.SaveChangesAsync();
 
-            // Отправляем уведомление студенту
             var student = await db.Users.FindAsync((int)CmbStudentForGrade.SelectedValue);
             var discipline = await db.Disciplines.FindAsync((int)CmbDisciplineForGrade.SelectedValue);
             
@@ -336,7 +333,6 @@ public partial class TeacherPanel : UserControl
                 string disciplineName = debtor.DisciplineName;
                 decimal grade = debtor.LastGrade;
 
-                // Find the student by name
                 var student = await db.Users.FirstOrDefaultAsync(u => u.FullName == studentName && u.Role == "Student");
                 if (student != null)
                 {

@@ -118,7 +118,7 @@ namespace UniversitySystem {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/UniversitySystem;component/studentpanel.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/UniversitySystem;V1.0.0.0;component/studentpanel.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\StudentPanel.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

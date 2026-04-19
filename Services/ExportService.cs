@@ -10,7 +10,6 @@ public static class ExportService
 {
     static ExportService()
     {
-        // Настройка QuestPDF для работы без лицензии
         QuestPDF.Settings.License = LicenseType.Community;
     }
 
@@ -18,38 +17,82 @@ public static class ExportService
     {
         try
         {
-            using var workbook = new XLWorkbook();
-            var worksheet = workbook.Worksheets.Add("Журнал оценок");
-
-            // Заголовки
-            var headers = new[] { "ID", "Студент", "Дисциплина", "Тип", "Оценка", "Дата", "Семестр", "Учебный год" };
-            for (int i = 0; i < headers.Length; i++)
+            var document = Document.Create(container =>
             {
-                worksheet.Cell(1, i + 1).Value = headers[i];
-                worksheet.Cell(1, i + 1).Style.Font.Bold = true;
-                worksheet.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
-                worksheet.Cell(1, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-            }
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4.Landscape());
+                    page.Margin(25);
+                    page.DefaultTextStyle(x => x.FontSize(10));
 
-            for (int row = 0; row < grades.Count; row++)
-            {
-                var g = grades[row];
-                worksheet.Cell(row + 2, 1).Value = g.Id;
-                worksheet.Cell(row + 2, 2).Value = g.Student?.FullName ?? $"[Студент #{g.StudentId}]";
-                worksheet.Cell(row + 2, 3).Value = g.Discipline?.Name ?? $"[Дисциплина #{g.DisciplineId}]";
-                worksheet.Cell(row + 2, 4).Value = g.Type ?? "";
-                worksheet.Cell(row + 2, 5).Value = g.Value;
-                worksheet.Cell(row + 2, 6).Value = g.Date.ToString("dd.MM.yyyy");
-                worksheet.Cell(row + 2, 7).Value = g.Semester;
-                worksheet.Cell(row + 2, 8).Value = g.AcademicYear ?? "";
-            }
+                    page.Header()
+                        .Text("ЖУРНАЛ ОЦЕНОК")
+                        .SemiBold().FontSize(20).FontColor(Colors.Blue.Medium)
+                        .AlignCenter();
 
-            worksheet.Columns().AdjustToContents();
-            workbook.SaveAs(filePath);
+                    page.Content()
+                        .PaddingVertical(10)
+                        .Table(table =>
+                        {
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(30);
+                                columns.RelativeColumn(4);
+                                columns.RelativeColumn(4);
+                                columns.ConstantColumn(60);
+                                columns.ConstantColumn(50);
+                                columns.ConstantColumn(70);
+                                columns.ConstantColumn(50);
+                                columns.ConstantColumn(70);
+                            });
+
+                            table.Header(header =>
+                            {
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("#").SemiBold().AlignCenter();
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("Студент").SemiBold();
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("Дисциплина").SemiBold();
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("Тип").SemiBold().AlignCenter();
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("Оценка").SemiBold().AlignCenter();
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("Дата").SemiBold().AlignCenter();
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("Сем.").SemiBold().AlignCenter();
+                                header.Cell().Background(Colors.Blue.Lighten3).Padding(4).Text("Год").SemiBold().AlignCenter();
+                            });
+
+                            for (int i = 0; i < grades.Count; i++)
+                            {
+                                var g = grades[i];
+                                var bgColor = i % 2 == 0 ? Colors.White : Colors.Grey.Lighten4;
+
+                                table.Cell().Background(bgColor).Padding(4).Text((i + 1).ToString()).AlignCenter();
+                                table.Cell().Background(bgColor).Padding(4).Text(g.Student?.FullName ?? $"[Студент #{g.StudentId}]");
+                                table.Cell().Background(bgColor).Padding(4).Text(g.Discipline?.Name ?? $"[Дисциплина #{g.DisciplineId}]");
+                                table.Cell().Background(bgColor).Padding(4).Text(g.Type ?? "").AlignCenter();
+                                table.Cell().Background(bgColor).Padding(4).Text(g.Value.ToString()).AlignCenter();
+                                table.Cell().Background(bgColor).Padding(4).Text(g.Date.ToString("dd.MM.yyyy")).AlignCenter();
+                                table.Cell().Background(bgColor).Padding(4).Text(g.Semester.ToString()).AlignCenter();
+                                table.Cell().Background(bgColor).Padding(4).Text(g.AcademicYear ?? "").AlignCenter();
+                            }
+                        });
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(text =>
+                        {
+                            text.Span("Всего записей: ").FontSize(9);
+                            text.Span(grades.Count.ToString()).FontSize(9).SemiBold();
+                            text.Span("  |  Страница ").FontSize(9);
+                            text.CurrentPageNumber().FontSize(9);
+                            text.Span(" из ").FontSize(9);
+                            text.TotalPages().FontSize(9);
+                        });
+                });
+            });
+
+            document.GeneratePdf(filePath);
         }
         catch (Exception ex)
         {
-            throw new Exception($"Ошибка экспорта в Excel: {ex.Message}", ex);
+            throw new Exception($"Ошибка экспорта: {ex.Message}", ex);
         }
     }
 
@@ -65,7 +108,6 @@ public static class ExportService
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Студенты");
 
-            // Заголовки
             var headers = new[] { "ID", "Логин", "ФИО", "Email", "Роль", "Группа", "Кафедра" };
             for (int i = 0; i < headers.Length; i++)
             {
@@ -138,7 +180,6 @@ public static class ExportService
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Расписание");
 
-            // Заголовки
             var headers = new[] { "День", "Время", "Дисциплина", "Группа", "Кафедра", "Аудитория", "Тип" };
             for (int i = 0; i < headers.Length; i++)
             {
@@ -226,7 +267,6 @@ public static class ExportService
         }
     }
 
-    // ==================== PDF ЭКСПОРТЫ ====================
 
     public static void ExportGradesToPdf(List<Grade> grades, string filePath)
     {

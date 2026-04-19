@@ -71,39 +71,30 @@ namespace UniversitySystem.Controls
             }
         }
 
-        /// <summary>
-        /// Проверяет конфликты расписания: аудитория, группа, преподаватель
-        /// </summary>
         private List<string> CheckConflicts(int? excludeId, int day, TimeOnly startTime, TimeOnly endTime, string room, int groupId, int teacherId)
         {
             var conflicts = new List<string>();
 
             foreach (var s in _schedules)
             {
-                // Исключаем текущую запись при редактировании
                 if (excludeId.HasValue && s.Id == excludeId.Value)
                     continue;
 
-                // Проверяем тот же день
                 if (s.DayOfWeek != day)
                     continue;
 
-                // Проверяем пересечение времени
                 if (startTime < s.EndTime && endTime > s.StartTime)
                 {
-                    // Конфликт по аудитории
                     if (!string.IsNullOrEmpty(room) && s.Room == room)
                     {
                         conflicts.Add($"⚠️ Аудитория {room} занята ({s.Discipline?.Name})");
                     }
 
-                    // Конфликт по группе
                     if (s.GroupId == groupId)
                     {
                         conflicts.Add($"⚠️ Группа уже занята ({s.Discipline?.Name})");
                     }
 
-                    // Конфликт по преподавателю
                     if (s.TeacherId == teacherId)
                     {
                         var db = new AppDbContext();
@@ -148,7 +139,6 @@ namespace UniversitySystem.Controls
 
                 var endTime = time.AddHours(2); // Занятие 2 часа
 
-                // Проверка конфликтов
                 var conflicts = CheckConflicts(_selected?.Id, day, time, endTime, room, gid, teacherId);
 
                 if (conflicts.Count > 0)

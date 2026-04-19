@@ -181,8 +181,6 @@ UniversitySystem/
 
 ```csharp
 optionsBuilder.UseSqlite("Data Source=UniversityDB.db");
-// или для SQL Server:
-// optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=UniversityDB;");
 ```
 
 ### Логирование

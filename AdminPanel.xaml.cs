@@ -27,7 +27,6 @@ public partial class AdminPanel : UserControl
         await LoadUsersAsync();
     }
 
-    // --- Факультеты ---
     private async Task LoadFacultiesAsync()
     {
         await using var db = new AppDbContext();
@@ -65,7 +64,6 @@ public partial class AdminPanel : UserControl
         }
     }
 
-    // --- Кафедры ---
     private async Task LoadDepartmentsAsync()
     {
         await using var db = new AppDbContext();
@@ -110,7 +108,6 @@ public partial class AdminPanel : UserControl
         }
     }
 
-    // --- Группы ---
     private async Task LoadGroupsAsync()
     {
         await using var db = new AppDbContext();
@@ -161,7 +158,6 @@ public partial class AdminPanel : UserControl
         }
     }
 
-    // --- Дисциплины ---
     private async Task LoadDisciplinesAsync()
     {
         await using var db = new AppDbContext();
@@ -203,7 +199,6 @@ public partial class AdminPanel : UserControl
         }
     }
 
-    // --- Учебный план ---
     private async Task LoadCurriculaAsync()
     {
         await using var db = new AppDbContext();
@@ -260,7 +255,6 @@ public partial class AdminPanel : UserControl
         }
     }
 
-    // --- Пользователи ---
     private async Task LoadUsersAsync()
     {
         await using var db = new AppDbContext();

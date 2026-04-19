@@ -5,17 +5,11 @@ using UniversitySystem;
 
 namespace UniversitySystem.Services;
 
-/// <summary>
-/// Сервис аутентификации и управления пользователями
-/// </summary>
 public static class AuthService
 {
     private static int _failedAttempts = 0;
     private const int MaxAttempts = 5;
 
-    /// <summary>
-    /// Вход пользователя в систему
-    /// </summary>
     public static async Task<(bool Success, string? Error)> LoginAsync(string login, string password)
     {
         if (_failedAttempts >= MaxAttempts)
@@ -30,7 +24,6 @@ public static class AuthService
             return (false, $"Неверный логин или пароль. Осталось попыток: {MaxAttempts - _failedAttempts}");
         }
 
-        // Проверка пароля (без хеширования)
         if (password != user.Password)
         {
             _failedAttempts++;
@@ -42,18 +35,12 @@ public static class AuthService
         return (true, null);
     }
 
-    /// <summary>
-    /// Выход из системы
-    /// </summary>
     public static void Logout()
     {
         RbacService.Logout();
         _failedAttempts = 0;
     }
 
-    /// <summary>
-    /// Создание нового пользователя с хешированием пароля
-    /// </summary>
     public static async Task<bool> CreateUserAsync(
         string login, 
         string password, 
@@ -71,7 +58,6 @@ public static class AuthService
 
         await using var db = new AppDbContext();
         
-        // Проверка уникальности логина
         if (await db.Users.AnyAsync(u => u.Login == login))
             throw new ArgumentException("Пользователь с таким логином уже существует");
 

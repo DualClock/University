@@ -140,7 +140,6 @@ public partial class ReportsPanel : UserControl
                     .OrderByDescending(x => x.AverageGrade)
                     .ToListAsync();
 
-                // Create anonymous list with Rank
                 var rankedData = ratingData.Select((r, index) => new { Rank = index + 1, r.StudentName, r.GroupName, r.AverageGrade }).ToList();
                 
                 await ExportService.ExportGradesToExcelAsync(
@@ -228,7 +227,6 @@ public partial class ReportsPanel : UserControl
                 var students = await db.Users.Where(u => u.GroupId == groupId && u.Role == "Student").ToListAsync();
                 var grades = await db.Grades.Where(g => students.Select(s => s.Id).Contains(g.StudentId)).ToListAsync();
 
-                // Build statistics report
                 var avg = grades.Count > 0 ? grades.Average(g => g.Value) : 0;
                 var excellent = grades.Count(g => g.Value >= 5);
                 var good = grades.Count(g => g.Value >= 4 && g.Value < 5);

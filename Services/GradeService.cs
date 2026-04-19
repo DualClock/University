@@ -55,7 +55,6 @@ public static class GradeService
             await db.SaveChangesAsync();
             await transaction.CommitAsync();
 
-            // Авто-уведомления о задолженностях
             foreach (var g in grades.Where(x => x.Value <= 2.5m))
                 await NotificationService.CreateAsync(g.StudentId, "Низкая оценка",
                     $"Получено {g.Value} по дисциплине. Требуется отработка.", "Debt");

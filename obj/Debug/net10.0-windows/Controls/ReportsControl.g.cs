@@ -147,7 +147,7 @@ namespace UniversitySystem.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/UniversitySystem;component/controls/reportscontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/UniversitySystem;V1.0.0.0;component/controls/reportscontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\ReportsControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

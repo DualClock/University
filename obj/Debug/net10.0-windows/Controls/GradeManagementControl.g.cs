@@ -115,7 +115,7 @@ namespace UniversitySystem.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/UniversitySystem;component/controls/grademanagementcontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/UniversitySystem;V1.0.0.0;component/controls/grademanagementcontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\GradeManagementControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

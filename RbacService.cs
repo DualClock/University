@@ -2,10 +2,6 @@
 
 namespace UniversitySystem;
 
-/// <summary>
-/// Основной сервис аутентификации и авторизации (RBAC)
-/// Управляет сессией пользователя и проверяет права доступа
-/// </summary>
 public static class RbacService
 {
     private static int _currentUserId;
@@ -13,23 +9,17 @@ public static class RbacService
     private static string _currentUserLogin = string.Empty;
     private static DateTime? _loginTime;
 
-    // Основные свойства для доступа к текущему пользователю
     public static int CurrentUserId => _currentUserId;
     public static string CurrentUserRole => _currentUserRole;
     public static string CurrentUserLogin => _currentUserLogin;
     public static string CurrentRole => _currentUserRole; // Алиас для совместимости
     public static DateTime? LoginTime => _loginTime;
 
-    // Проверка аутентификации
     public static bool IsAuthenticated => _currentUserId > 0;
 
-    // Проверка истечения сессии (30 минут)
     public static bool IsSessionExpired(int timeoutMinutes = 30) =>
         _loginTime.HasValue && (DateTime.UtcNow - _loginTime.Value).TotalMinutes > timeoutMinutes;
 
-    /// <summary>
-    /// Вход пользователя в систему
-    /// </summary>
     public static void Login(int userId, string role, string login)
     {
         _currentUserId = userId;
@@ -38,9 +28,6 @@ public static class RbacService
         _loginTime = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Выход из системы
-    /// </summary>
     public static void Logout()
     {
         _currentUserId = 0;
@@ -49,9 +36,6 @@ public static class RbacService
         _loginTime = null;
     }
 
-    /// <summary>
-    /// Проверка прав доступа по ролям
-    /// </summary>
     public static bool HasAccess(string requiredRole)
     {
         if (!IsAuthenticated) return false;
@@ -66,9 +50,6 @@ public static class RbacService
         };
     }
 
-    /// <summary>
-    /// Проверка: пользователь является владельцем данных или админом
-    /// </summary>
     public static bool IsOwnerOrAdmin(int targetUserId)
     {
         if (!IsAuthenticated) return false;

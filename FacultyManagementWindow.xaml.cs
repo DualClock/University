@@ -93,7 +93,6 @@ public partial class FacultyManagementWindow : Window
 
             if (_selectedFaculty == null)
             {
-                // Создание нового факультета
                 var newFaculty = new Faculty
                 {
                     Name = FacultyNameTextBox.Text.Trim(),
@@ -103,7 +102,6 @@ public partial class FacultyManagementWindow : Window
             }
             else
             {
-                // Обновление существующего факультета
                 _selectedFaculty.Name = FacultyNameTextBox.Text.Trim();
                 _selectedFaculty.Code = FacultyNameTextBox.Text.Trim().Substring(0, Math.Min(3, FacultyNameTextBox.Text.Trim().Length)).ToUpper();
                 db.Faculties.Update(_selectedFaculty);

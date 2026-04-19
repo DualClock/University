@@ -103,7 +103,7 @@ namespace UniversitySystem {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/UniversitySystem;V1.0.0.0;component/departmentmanagementwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/UniversitySystem;component/departmentmanagementwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\DepartmentManagementWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

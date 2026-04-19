@@ -8,7 +8,7 @@
             <ColumnDefinition Width="340"/>
         </Grid.ColumnDefinitions>
         
-        <!-- Список -->
+        
         <Border Grid.Column="0" Background="White" CornerRadius="16" Padding="24" Margin="0,0,16,0">
             <Border.Effect>
                 <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="15" Direction="320" ShadowDepth="3"/>
@@ -43,7 +43,7 @@
             </Grid>
         </Border>
         
-        <!-- Детали -->
+        
         <Border Grid.Column="1" Background="White" CornerRadius="16" Padding="24">
             <Border.Effect>
                 <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="15" Direction="320" ShadowDepth="3"/>
