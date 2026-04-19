@@ -1,0 +1,94 @@
+<UserControl x:Class="UniversitySystem.Controls.ExportControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="#F8F9FA"
+        Padding="0">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <!-- Заголовок -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <TextBlock Text="📊" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="Экспорт данных" FontSize="20" FontWeight="Bold" Foreground="#333"/>
+            </StackPanel>
+
+            <!-- Экспорт в Excel -->
+            <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="📊 Экспорт в Excel" FontSize="16" FontWeight="Bold" Margin="0,0,0,16"/>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Строка 1 -->
+                        <Button Grid.Row="0" Grid.Column="0" 
+                                Content="📥 Экспорт оценок" Background="#4A00E0" Foreground="White" 
+                                Padding="20,12" Margin="0,0,8,12" MinWidth="200" MinHeight="50"
+                                HorizontalAlignment="Left"
+                                Click="ExportGrades_Click"/>
+                        <Button Grid.Row="0" Grid.Column="1" 
+                                Content="📥 Экспорт студентов" Background="#8E2DE2" Foreground="White" 
+                                Padding="20,12" Margin="8,0,0,12" MinWidth="200" MinHeight="50"
+                                HorizontalAlignment="Left"
+                                Click="ExportStudents_Click"/>
+                        
+                        <!-- Строка 2 -->
+                        <Button Grid.Row="1" Grid.Column="0" 
+                                Content="📥 Экспорт расписания" Background="#28A745" Foreground="White" 
+                                Padding="20,12" Margin="0,0,8,0" MinWidth="200" MinHeight="50"
+                                HorizontalAlignment="Left"
+                                Click="ExportSchedule_Click"/>
+                        <Button Grid.Row="1" Grid.Column="1" 
+                                Content="📊 Экспорт статистики" Background="#17A2B8" Foreground="White" 
+                                Padding="20,12" Margin="8,0,0,0" MinWidth="200" MinHeight="50"
+                                HorizontalAlignment="Left"
+                                Click="ExportStats_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Экспорт в PDF -->
+            <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="📄 Экспорт в PDF" FontSize="16" FontWeight="Bold" Margin="0,0,0,16"/>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Строка 1 -->
+                        <Button Grid.Row="0" Grid.Column="0" 
+                                Content="📄 Экспорт оценок" Background="#DC3545" Foreground="White" 
+                                Padding="20,12" Margin="0,0,8,12" MinWidth="200" MinHeight="50"
+                                HorizontalAlignment="Left"
+                                Click="ExportGradesPdf_Click"/>
+                        <Button Grid.Row="0" Grid.Column="1" 
+                                Content="📄 Экспорт расписания" Background="#FFC107" Foreground="Black" 
+                                Padding="20,12" Margin="8,0,0,12" MinWidth="200" MinHeight="50"
+                                HorizontalAlignment="Left"
+                                Click="ExportSchedulePdf_Click"/>
+                        
+                        <!-- Строка 2 -->
+                        <Button Grid.Row="1" Grid.Column="0" 
+                                Content="📄 Экспорт статистики" Background="#6C757D" Foreground="White" 
+                                Padding="20,12" Margin="0,0,8,0" MinWidth="200" MinHeight="50"
+                                HorizontalAlignment="Left"
+                                Click="ExportStatsPdf_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

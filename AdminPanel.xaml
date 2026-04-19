@@ -1,0 +1,326 @@
+﻿<UserControl x:Class="UniversitySystem.AdminPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Margin="16">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Панель администратора" 
+                      FontSize="28" 
+                      FontWeight="Bold"
+                      Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            <TextBlock Text="Управление учебным процессом" 
+                      FontSize="14"
+                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                      Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Вкладки админ-панели -->
+        <TabControl Grid.Row="1">
+            <!-- Факультеты -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Building" Margin="0,0,8,0"/>
+                        <TextBlock Text="Факультеты"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBox x:Name="TxtFacultyName" 
+                                materialDesign:HintAssist.Hint="Название факультета"
+                                Width="250"/>
+                        <TextBox x:Name="TxtFacultyCode" 
+                                materialDesign:HintAssist.Hint="Код"
+                                Width="100"
+                                Margin="8,0,0,0"/>
+                        <Button Content="Добавить" 
+                               Click="BtnAddFaculty_Click"
+                               Margin="8,0,0,0"/>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgFaculties" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Код" Binding="{Binding Code}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Кафедры -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Desk" Margin="0,0,8,0"/>
+                        <TextBlock Text="Кафедры" FontSize="12"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBox x:Name="TxtDepartmentName" 
+                                materialDesign:HintAssist.Hint="Название кафедры"
+                                Width="250"/>
+                        <TextBox x:Name="TxtDepartmentCode" 
+                                materialDesign:HintAssist.Hint="Код"
+                                Width="100"
+                                Margin="8,0,0,0"/>
+                        <ComboBox x:Name="CmbFacultyForDept" 
+                                 materialDesign:HintAssist.Hint="Факультет"
+                                 Width="200"
+                                 Margin="8,0,0,0"
+                                 DisplayMemberPath="Name"
+                                 SelectedValuePath="Id"/>
+                        <Button Content="Добавить" 
+                               Click="BtnAddDepartment_Click"
+                               Margin="8,0,0,0"/>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgDepartments" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Код" Binding="{Binding Code}" Width="100"/>
+                            <DataGridTextColumn Header="Факультет" Binding="{Binding Faculty.Name}" Width="200"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Группы -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountGroup" Margin="0,0,8,0"/>
+                        <TextBlock Text="Группы" FontSize="12"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBox x:Name="TxtGroupName" 
+                                materialDesign:HintAssist.Hint="Название группы"
+                                Width="150"/>
+                        <TextBox x:Name="TxtGroupYear" 
+                                materialDesign:HintAssist.Hint="Курс"
+                                Width="80"
+                                Margin="8,0,0,0"/>
+                        <ComboBox x:Name="CmbDepartmentForGroup" 
+                                 materialDesign:HintAssist.Hint="Кафедра"
+                                 Width="200"
+                                 Margin="8,0,0,0"
+                                 DisplayMemberPath="Name"
+                                 SelectedValuePath="Id"/>
+                        <Button Content="Добавить" 
+                               Click="BtnAddGroup_Click"
+                               Margin="8,0,0,0"/>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgGroups" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="120"/>
+                            <DataGridTextColumn Header="Курс" Binding="{Binding Year}" Width="60"/>
+                            <DataGridTextColumn Header="Кафедра" Binding="{Binding Department.Name}" Width="200"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Дисциплины -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="BookOpenPageVariant" Margin="0,0,8,0"/>
+                        <TextBlock Text="Дисциплины" FontSize="12"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBox x:Name="TxtDisciplineName" 
+                                materialDesign:HintAssist.Hint="Название"
+                                Width="250"/>
+                        <TextBox x:Name="TxtDisciplineCode" 
+                                materialDesign:HintAssist.Hint="Код"
+                                Width="100"
+                                Margin="8,0,0,0"/>
+                        <Button Content="Добавить" 
+                               Click="BtnAddDiscipline_Click"
+                               Margin="8,0,0,0"/>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgDisciplines" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Код" Binding="{Binding Code}" Width="100"/>
+                            <DataGridTextColumn Header="Лекции" Binding="{Binding LectureHours}" Width="70"/>
+                            <DataGridTextColumn Header="Семинары" Binding="{Binding SeminarHours}" Width="70"/>
+                            <DataGridTextColumn Header="Лабораторные" Binding="{Binding LabHours}" Width="90"/>
+                            <DataGridTextColumn Header="Кредиты" Binding="{Binding Credits}" Width="70"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Учебный план -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CalendarText" Margin="0,0,8,0"/>
+                        <TextBlock Text="Учебный план"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <ComboBox x:Name="CmbGroupForCurriculum" 
+                                 materialDesign:HintAssist.Hint="Группа"
+                                 Width="150"
+                                 DisplayMemberPath="Name"
+                                 SelectedValuePath="Id"/>
+                        <ComboBox x:Name="CmbDisciplineForCurriculum" 
+                                 materialDesign:HintAssist.Hint="Дисциплина"
+                                 Width="250"
+                                 Margin="8,0,0,0"
+                                 DisplayMemberPath="Name"
+                                 SelectedValuePath="Id"/>
+                        <TextBox x:Name="TxtSemester" 
+                                materialDesign:HintAssist.Hint="Семестр"
+                                Width="100"
+                                Margin="8,0,0,0"/>
+                        <TextBox x:Name="TxtAcademicYear" 
+                                materialDesign:HintAssist.Hint="Учебный год"
+                                Width="120"
+                                Margin="8,0,0,0"
+                                Text="2024/2025"/>
+                        <Button Content="Добавить" 
+                               Click="BtnAddCurriculum_Click"
+                               Margin="8,0,0,0"/>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgCurricula" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Группа" Binding="{Binding Group.Name}" Width="120"/>
+                            <DataGridTextColumn Header="Дисциплина" Binding="{Binding Discipline.Name}" Width="*"/>
+                            <DataGridTextColumn Header="Семестр" Binding="{Binding Semester}" Width="80"/>
+                            <DataGridTextColumn Header="Учебный год" Binding="{Binding AcademicYear}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Пользователи -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountMultiple" Margin="0,0,8,0"/>
+                        <TextBlock Text="Пользователи"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBox x:Name="TxtUserLogin" 
+                                materialDesign:HintAssist.Hint="Логин"
+                                Width="120"/>
+                        <TextBox x:Name="TxtUserPassword" 
+                                materialDesign:HintAssist.Hint="Пароль"
+                                Width="120"
+                                Margin="8,0,0,0"/>
+                        <TextBox x:Name="TxtUserFullName" 
+                                materialDesign:HintAssist.Hint="ФИО"
+                                Width="250"
+                                Margin="8,0,0,0"/>
+                        <ComboBox x:Name="CmbUserRole" 
+                                 materialDesign:HintAssist.Hint="Роль"
+                                 Width="120"
+                                 Margin="8,0,0,0">
+                            <ComboBoxItem Content="Student"/>
+                            <ComboBoxItem Content="Teacher"/>
+                            <ComboBoxItem Content="Admin"/>
+                        </ComboBox>
+                        <Button Content="Добавить" 
+                               Click="BtnAddUser_Click"
+                               Margin="8,0,0,0"/>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgUsers" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Логин" Binding="{Binding Login}" Width="120"/>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="*"/>
+                            <DataGridTextColumn Header="Роль" Binding="{Binding Role}" Width="100"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

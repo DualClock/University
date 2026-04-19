@@ -1,0 +1,290 @@
+﻿<UserControl x:Class="UniversitySystem.TeacherPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Margin="16">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Панель преподавателя" 
+                      FontSize="28" 
+                      FontWeight="Bold"
+                      Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            <TextBlock Text="Управление учебным процессом и оценками" 
+                      FontSize="14"
+                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                      Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Вкладки преподавателя -->
+        <TabControl Grid.Row="1">
+            <!-- Группы -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountGroup" Margin="0,0,8,0"/>
+                        <TextBlock Text="Группы"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <DataGrid x:Name="DgGroups" 
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8"
+                             SelectionChanged="DgGroups_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="150"/>
+                            <DataGridTextColumn Header="Курс" Binding="{Binding Year}" Width="80"/>
+                            <DataGridTextColumn Header="Кафедра" Binding="{Binding Department.Name}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Дисциплины -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="BookOpenPageVariant" Margin="0,0,8,0"/>
+                        <TextBlock Text="Дисциплины"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <DataGrid x:Name="DgDisciplines" 
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Код" Binding="{Binding Code}" Width="100"/>
+                            <DataGridTextColumn Header="Лекции" Binding="{Binding LectureHours}" Width="80"/>
+                            <DataGridTextColumn Header="Семинары" Binding="{Binding SeminarHours}" Width="80"/>
+                            <DataGridTextColumn Header="Лабораторные" Binding="{Binding LabHours}" Width="90"/>
+                            <DataGridTextColumn Header="Кредиты" Binding="{Binding Credits}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Ввод оценок -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Pencil" Margin="0,0,8,0"/>
+                        <TextBlock Text="Ввод оценок"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Форма ввода оценки -->
+                    <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,16">
+                        <TextBlock Text="Добавить оценку" 
+                                  FontSize="18" 
+                                  FontWeight="Bold"
+                                  Margin="0,0,0,12"/>
+                        
+                        <WrapPanel>
+                            <ComboBox x:Name="CmbStudentForGrade" 
+                                     materialDesign:HintAssist.Hint="Студент"
+                                     Width="250"
+                                     DisplayMemberPath="FullName"
+                                     SelectedValuePath="Id"
+                                     Margin="0,0,8,0"/>
+                            
+                            <ComboBox x:Name="CmbDisciplineForGrade" 
+                                     materialDesign:HintAssist.Hint="Дисциплина"
+                                     Width="250"
+                                     DisplayMemberPath="Name"
+                                     SelectedValuePath="Id"
+                                     Margin="0,0,8,0"/>
+                            
+                            <ComboBox x:Name="CmbGradeType" 
+                                     materialDesign:HintAssist.Hint="Тип"
+                                     Width="150"
+                                     Margin="0,0,8,0">
+                                <ComboBoxItem Content="Seminar"/>
+                                <ComboBoxItem Content="Lab"/>
+                                <ComboBoxItem Content="Exam"/>
+                            </ComboBox>
+                            
+                            <TextBox x:Name="TxtGradeValue" 
+                                    materialDesign:HintAssist.Hint="Оценка (0-5)"
+                                    Width="120"
+                                    Margin="0,0,8,0"/>
+                            
+                            <Button Content="Добавить" 
+                                   Click="BtnAddGrade_Click"
+                                   Style="{StaticResource MaterialDesignRaisedButton}"/>
+                        </WrapPanel>
+                    </StackPanel>
+                    
+                    <!-- Таблица оценок -->
+                    <DataGrid x:Name="DgGrades" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Студент" Binding="{Binding Student.FullName}" Width="*"/>
+                            <DataGridTextColumn Header="Дисциплина" Binding="{Binding Discipline.Name}" Width="*"/>
+                            <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="100"/>
+                            <DataGridTextColumn Header="Оценка" Binding="{Binding Value}" Width="80"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Экспорт -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileExcel" Margin="0,0,8,0"/>
+                        <TextBlock Text="Экспорт"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+                        <TextBlock Text="Экспорт данных в Excel" 
+                                  FontSize="24" 
+                                  FontWeight="Bold"
+                                  HorizontalAlignment="Center"
+                                  Margin="0,0,0,16"/>
+                        
+                        <WrapPanel HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <Button Content="Экспортировать оценки" 
+                                   Click="BtnExportGrades_Click"
+                                   Style="{StaticResource MaterialDesignRaisedButton}"
+                                   Width="200"
+                                   Height="50"
+                                   FontSize="16"
+                                   Margin="8"/>
+                            
+                            <Button Content="Экспортировать студентов" 
+                                   Click="BtnExportStudents_Click"
+                                   Style="{StaticResource MaterialDesignRaisedButton}"
+                                   Width="200"
+                                   Height="50"
+                                   FontSize="16"
+                                   Margin="8"/>
+                        </WrapPanel>
+                    </StackPanel>
+                    
+                    <!-- Экзаменационная ведомость -->
+                    <materialDesign:Card Grid.Row="1" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Генерация экзаменационной ведомости" 
+                                      FontSize="18" 
+                                      FontWeight="Bold"
+                                      Margin="0,0,0,16"/>
+                            
+                            <WrapPanel Margin="0,0,0,16">
+                                <ComboBox x:Name="CmbExamGroup" 
+                                         materialDesign:HintAssist.Hint="Группа"
+                                         Width="200"
+                                         DisplayMemberPath="Name"
+                                         SelectedValuePath="Id"
+                                         Margin="0,0,8,0"/>
+                                
+                                <ComboBox x:Name="CmbExamDiscipline" 
+                                         materialDesign:HintAssist.Hint="Дисциплина"
+                                         Width="250"
+                                         DisplayMemberPath="Name"
+                                         SelectedValuePath="Id"
+                                         Margin="0,0,8,0"/>
+                                
+                                <Button Content="Создать ведомость" 
+                                       Click="BtnGenerateExamSheet_Click"
+                                       Style="{StaticResource MaterialDesignRaisedButton}"
+                                       Margin="0,0,8,0"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </materialDesign:Card>
+                </Grid>
+            </TabItem>
+            
+            <!-- Уведомления о должниках -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="BellAlert" Margin="0,0,8,0"/>
+                        <TextBlock Text="Должники"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+                        <TextBlock Text="Студенты с задолженностями" 
+                                  FontSize="18" 
+                                  FontWeight="Bold"
+                                  Margin="0,0,0,16"/>
+                        
+                        <WrapPanel>
+                            <ComboBox x:Name="CmbDebtorsGroup" 
+                                     materialDesign:HintAssist.Hint="Группа"
+                                     Width="200"
+                                     DisplayMemberPath="Name"
+                                     SelectedValuePath="Id"
+                                     Margin="0,0,8,0"
+                                     SelectionChanged="CmbDebtorsGroup_SelectionChanged"/>
+                            
+                            <ComboBox x:Name="CmbDebtorsDiscipline" 
+                                     materialDesign:HintAssist.Hint="Дисциплина"
+                                     Width="250"
+                                     DisplayMemberPath="Name"
+                                     SelectedValuePath="Id"
+                                     Margin="0,0,8,0"/>
+                            
+                            <Button Content="Найти должников" 
+                                   Click="BtnFindDebtors_Click"
+                                   Style="{StaticResource MaterialDesignRaisedButton}"
+                                   Margin="0,0,8,0"/>
+                            
+                            <Button Content="Отправить уведомления" 
+                                   Click="BtnNotifyDebtors_Click"
+                                   Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                   Margin="0,0,8,0"/>
+                        </WrapPanel>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgDebtors" 
+                             Grid.Row="1"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Студент" Binding="{Binding StudentName}" Width="*"/>
+                            <DataGridTextColumn Header="Дисциплина" Binding="{Binding DisciplineName}" Width="*"/>
+                            <DataGridTextColumn Header="Последняя оценка" Binding="{Binding LastGrade}" Width="100"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

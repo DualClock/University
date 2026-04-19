@@ -1,0 +1,198 @@
+<Window x:Class="UniversitySystem.MainMenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="University System - Главное меню"
+        Height="700"
+        Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource MaterialDesignPaper}">
+    
+    <Window.Resources>
+        <Style x:Key="MenuButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Padding" Value="16,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="60"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель -->
+        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="0">
+            <Grid Margin="16,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="School" 
+                                            Width="28" 
+                                            Height="28" 
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,12,0"/>
+                    <TextBlock Text="University System" 
+                              FontSize="24" 
+                              FontWeight="Bold"
+                              VerticalAlignment="Center"
+                              Foreground="White"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock x:Name="TxtUserInfo" 
+                              Text="" 
+                              VerticalAlignment="Center"
+                              Margin="0,0,16,0"
+                              Foreground="White"
+                              Opacity="0.8"/>
+                    <Button Content="Выйти" 
+                           Click="BtnLogout_Click"
+                           Style="{StaticResource MaterialDesignFlatButton}"
+                           Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <!-- Основная область -->
+        <Grid Grid.Row="1" Margin="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Левая колонка - Администрирование -->
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Администрирование" 
+                          FontSize="20" 
+                          FontWeight="Bold"
+                          Margin="0,0,0,16"
+                          Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                <!-- Кнопки для администратора -->
+                <Button x:Name="BtnManageFaculties" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnManageFaculties_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="Domain" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Факультеты"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnManageDepartments" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnManageDepartments_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="OfficeBuilding" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Кафедры"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnManageGroups" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnManageGroups_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="AccountGroup" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Группы"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnManageDisciplines" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnManageDisciplines_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="Book" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Дисциплины"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnManageUsers" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnManageUsers_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="AccountMultiple" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Пользователи"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnManageCurriculum" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnManageCurriculum_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="BookOpenPageVariant" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Учебный план"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <!-- Правая колонка - Работа с оценками и отчетами -->
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Работа с оценками" 
+                          FontSize="20" 
+                          FontWeight="Bold"
+                          Margin="0,0,0,16"
+                          Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                <!-- Кнопки для преподавателя -->
+                <Button x:Name="BtnManageGrades" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnManageGrades_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="Pencil" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Ввод оценок"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnViewSchedule" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnViewSchedule_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="Calendar" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Расписание"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnViewGrades" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnViewGrades_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="ChartLine" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Оценки студентов"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Отчеты -->
+                <TextBlock Text="Отчеты и аналитика" 
+                          FontSize="20" 
+                          FontWeight="Bold"
+                          Margin="0,24,0,16"
+                          Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                <Button x:Name="BtnReports" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnReports_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="ChartBar" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Отчеты"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnExport" 
+                        Style="{StaticResource MenuButtonStyle}"
+                        Click="BtnExport_Click">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="Export" Width="20" Height="20" Margin="0,0,8,0"/>
+                        <TextBlock Text="Экспорт"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

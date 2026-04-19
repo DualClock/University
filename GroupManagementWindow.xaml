@@ -1,0 +1,139 @@
+<Window x:Class="UniversitySystem.GroupManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Управление группами"
+        Height="600"
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F8F9FA">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,15">
+            <TextBlock Text="👥" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBlock Text="Управление группами" FontSize="20" FontWeight="Bold" Foreground="#333"/>
+        </StackPanel>
+
+        <!-- Основной контент -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="320"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Список групп -->
+            <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Фильтры и кнопки -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                        <ComboBox x:Name="DepartmentFilterComboBox" 
+                                  Width="200" 
+                                  DisplayMemberPath="Name"
+                                  materialDesign:HintAssist.Hint="Фильтр по кафедре"
+                                  SelectionChanged="Filter_SelectionChanged"/>
+                        <Button Content="➕ Добавить" 
+                                Background="#4A00E0" 
+                                Foreground="White" 
+                                Padding="5" FontSize="12"
+                                BorderThickness="0"
+                                Margin="10,0,0,0"
+                                Click="AddGroup_Click"/>
+                        <Button Content="✏️ Редактор" 
+                                Background="#8E2DE2" 
+                                Foreground="White" FontSize="12"
+                                Padding="5" 
+                                BorderThickness="0"
+                                Click="EditGroup_Click"/>
+                        <Button Content="🗑️ Удалить" 
+                                Background="#FF4444" 
+                                Foreground="White" FontSize="12"
+                                Padding="5" 
+                                BorderThickness="0"
+                                Click="DeleteGroup_Click"/>
+                    </StackPanel>
+
+                    <!-- Список -->
+                    <DataGrid Grid.Row="1" 
+                             x:Name="GroupDataGrid"
+                             Margin="0,10,0,0"
+                             AutoGenerateColumns="False"
+                             CanUserAddRows="False"
+                             CanUserDeleteRows="False"
+                             SelectionMode="Single"
+                             SelectionChanged="GroupDataGrid_SelectionChanged"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Год поступления" Binding="{Binding Year}" Width="100"/>
+                            <DataGridTextColumn Header="Кафедра" Binding="{Binding Department.Name}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- Панель деталей -->
+            <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="20" Margin="20,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Детали группы" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,15"/>
+                    
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Название *" FontSize="12" Foreground="#666" Margin="0,0,0,5"/>
+                        <TextBox x:Name="GroupNameTextBox" 
+                                 Background="#F5F5F5" 
+                                 BorderThickness="1" 
+                                 BorderBrush="#E0E0E0" 
+                                 Padding="10"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Год поступления *" FontSize="12" Foreground="#666" Margin="0,0,0,5"/>
+                        <TextBox x:Name="GroupYearTextBox" 
+                                 Background="#F5F5F5" 
+                                 BorderThickness="1" 
+                                 BorderBrush="#E0E0E0" 
+                                 Padding="10"
+                                 PreviewTextInput="YearTextBox_PreviewTextInput"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Кафедра *" FontSize="13" Foreground="#666" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="DepartmentComboBox" 
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
+                                  Background="#F5F5F5"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
+                        <Button x:Name="SaveGroupButton" 
+                                Content="💾 Сохранить" FontSize="12"
+                                Background="#4A00E0" 
+                                Foreground="White" 
+                                Padding="13,8" 
+                                BorderThickness="0"
+                                Click="SaveGroup_Click"/>
+                        <Button Content="❌ Отмена" FontSize="12"
+                                Background="#999" 
+                                Foreground="White" 
+                                Padding="19,8" 
+                                BorderThickness="0"
+                                Margin="10,0,0,0"
+                                Click="CancelGroup_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,178 @@
+﻿<Window x:Class="UniversitySystem.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="University System - Вход"
+        Height="600"
+        Width="950"
+        WindowStartupLocation="CenterScreen"
+        Background="White"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#4A00E0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="30,14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="25"
+                                Padding="{TemplateBinding Padding}"
+                                MinHeight="50">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#8E2DE2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#F5F5F5"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="CaretBrush" Value="#4A00E0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="Background" Value="#F5F5F5"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="CaretBrush" Value="#4A00E0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Side with Gradient -->
+        <Border Grid.Column="0" CornerRadius="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#4A00E0" Offset="0"/>
+                    <GradientStop Color="#8E2DE2" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid Margin="30,40">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="🎓" FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    <TextBlock Text="University System" 
+                               FontSize="28" 
+                               FontWeight="Bold" 
+                               Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Информационная система" 
+                               FontSize="16" 
+                               Foreground="White"
+                               Opacity="0.9"
+                               HorizontalAlignment="Center"
+                               Margin="0,10,0,0"/>
+                    <TextBlock Text="университета" 
+                               FontSize="16" 
+                               Foreground="White"
+                               Opacity="0.9"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Right Side - Login Form -->
+        <Grid Grid.Column="1" Margin="50,40">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Добро пожаловать!" 
+                           FontSize="28" 
+                           FontWeight="Bold" 
+                           Foreground="#333"
+                           Margin="0,0,0,8"/>
+                <TextBlock Text="Войдите в свой аккаунт" 
+                           FontSize="15" 
+                           Foreground="#666"
+                           Margin="0,0,0,35"/>
+
+                <TextBlock Text="Логин" FontSize="13" FontWeight="SemiBold" Foreground="#555" Margin="0,0,0,8"/>
+                <TextBox x:Name="EmailTextBox" 
+                         Style="{StaticResource ModernTextBox}"
+                         Margin="0,0,0,20"
+                         Text="admin@university.edu"/>
+
+                <TextBlock Text="Пароль" FontSize="13" FontWeight="SemiBold" Foreground="#555" Margin="0,0,0,8"/>
+                <PasswordBox x:Name="PasswordBox" 
+                              Style="{StaticResource ModernPasswordBox}"
+                              Margin="0,0,0,10"
+                              Password="admin123"/>
+
+                <Button x:Name="LoginButton" 
+                        Content="Войти в систему" 
+                        Style="{StaticResource ModernButton}"
+                        HorizontalAlignment="Stretch"
+                        Margin="0,15,0,0"
+                        Click="LoginButton_Click"/>
+
+                <TextBlock x:Name="ErrorText" 
+                           Text="" 
+                           Foreground="#FF4444" 
+                           FontSize="12" 
+                           TextWrapping="Wrap"
+                           Margin="0,15,0,0"
+                           HorizontalAlignment="Center"/>
+
+                <StackPanel Margin="0,30,0,0">
+                    <TextBlock Text="Тестовые аккаунты:" 
+                               FontSize="12" 
+                               Foreground="#888" 
+                               Margin="0,0,0,8"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="admin / admin123" 
+                               FontSize="11" 
+                               Foreground="#666"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="ivanov / ivanov123" 
+                               FontSize="11" 
+                               Foreground="#666"
+                               HorizontalAlignment="Center"
+                               Margin="0,3,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

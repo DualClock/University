@@ -1,0 +1,14 @@
+using System; using System.Collections.Generic; using System.Linq; using System.Windows; using System.Windows.Controls; using Microsoft.EntityFrameworkCore; using UniversitySystem.Data; using UniversitySystem.Models;
+namespace UniversitySystem.Controls{
+public partial class GroupManagementControl : UserControl{
+    private List<Group> _groups; private List<Department> _departments; private Group? _selected;
+    public GroupManagementControl(){ InitializeComponent(); LoadData(); }
+    private async void LoadData(){ using var db = new AppDbContext(); _departments = await db.Departments.ToListAsync(); DepartmentComboBox.ItemsSource = DepartmentFilter.ItemsSource = _departments; await LoadGroups(); }
+    private async System.Threading.Tasks.Task LoadGroups(){ using var db = new AppDbContext(); _groups = await db.Groups.Include(g => g.Department).ToListAsync(); RefreshDataGrid(); }
+    private void RefreshDataGrid() => GroupDataGrid.ItemsSource = _groups;
+    private void FilterChanged(object sender, object e){ var q = SearchTextBox.Text.Trim().ToLower(); var did = (DepartmentFilter.SelectedItem as Department)?.Id; GroupDataGrid.ItemsSource = _groups.Where(g => (string.IsNullOrEmpty(q) || g.Name.ToLower().Contains(q)) && (did == null || g.DepartmentId == did)).ToList(); }
+    private void AddGroup_Click(object sender, RoutedEventArgs e){ _selected = null; GroupNameTextBox.Text = YearTextBox.Text = ""; DepartmentComboBox.SelectedIndex = -1; }
+    private async void SaveGroup_Click(object sender, RoutedEventArgs e){ if (string.IsNullOrWhiteSpace(GroupNameTextBox.Text)){ MessageBox.Show("Введите название"); return; } if (!int.TryParse(YearTextBox.Text, out int year) || year < 2000 || year > 2100){ MessageBox.Show("Год должен быть от 2000 до 2100"); return; } try{ using var db = new AppDbContext(); var did = (DepartmentComboBox.SelectedItem as Department)?.Id; if (_selected == null){ db.Groups.Add(new Group { Name = GroupNameTextBox.Text.Trim(), Year = year, DepartmentId = did ?? 0 }); } else { var g = await db.Groups.FindAsync(_selected.Id); if (g != null){ g.Name = GroupNameTextBox.Text.Trim(); g.Year = year; g.DepartmentId = did ?? 0; db.Update(g); } } await db.SaveChangesAsync(); await LoadGroups(); ClearForm(); MessageBox.Show("Сохранено"); } catch (Exception ex){ MessageBox.Show($"Ошибка: {ex.Message}"); } }
+    private void CancelGroup_Click(object sender, RoutedEventArgs e) => ClearForm();
+    private void ClearForm(){ _selected = null; GroupNameTextBox.Text = YearTextBox.Text = ""; DepartmentComboBox.SelectedIndex = -1; }
+    private void GroupDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e){ if (GroupDataGrid.SelectedItem is Group g){ _selected = g; GroupNameTextBox.Text = g.Name; YearTextBox.Text = g.Year.ToString(); DepartmentComboBox.SelectedItem = _departments.FirstOrDefault(d => d.Id == g.DepartmentId); } }}}

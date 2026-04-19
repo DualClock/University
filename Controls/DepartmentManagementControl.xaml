@@ -1,0 +1,83 @@
+<UserControl x:Class="UniversitySystem.Controls.DepartmentManagementControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="Transparent">
+    <Grid Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="340"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Список -->
+        <Border Grid.Column="0" Background="White" CornerRadius="16" Padding="24" Margin="0,0,16,0">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="15" Direction="320" ShadowDepth="3"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                    <ComboBox x:Name="FacultyFilter" Width="200" Padding="12,10" DisplayMemberPath="Name" SelectionChanged="FilterChanged" Background="#F5F5F7" BorderThickness="0"/>
+                    <TextBox x:Name="SearchTextBox" Width="200" Margin="10,0,0,0" Padding="14,10" FontSize="14" BorderThickness="0" Background="#F5F5F7" TextChanged="FilterChanged"/>
+                    <Button Content="➕ Добавить" Background="#4A00E0" Foreground="White" Padding="16,10" BorderThickness="0" Margin="12,0,0,0" FontWeight="SemiBold" MinWidth="110" MinHeight="40" Click="AddDepartment_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}" MinHeight="40">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+                
+                <DataGrid Grid.Row="1" x:Name="DepartmentDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" SelectionChanged="DepartmentDataGrid_SelectionChanged" Background="Transparent" BorderThickness="0" RowHeight="48">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Кафедра" Binding="{Binding FacultyId}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+        
+        <!-- Детали -->
+        <Border Grid.Column="1" Background="White" CornerRadius="16" Padding="24">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="15" Direction="320" ShadowDepth="3"/>
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock Text="📋 Информация о кафедре" FontSize="16" FontWeight="Bold" Foreground="#1A1A2E" Margin="0,0,0,20"/>
+                
+                <TextBlock Text="Название" FontSize="12" Foreground="#666" Margin="0,0,0,6"/>
+                <TextBox x:Name="DepartmentNameTextBox" Padding="14,12" FontSize="14" Background="#F5F5F7" BorderThickness="0" Margin="0,0,0,16"/>
+                
+                <TextBlock Text="Факультет" FontSize="12" Foreground="#666" Margin="0,0,0,6"/>
+                <ComboBox x:Name="FacultyComboBox" DisplayMemberPath="Name" Padding="12,10" Background="#F5F5F7" BorderThickness="0" Margin="0,0,0,20"/>
+                
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Content="💾 Сохранить" Background="#4A00E0" Foreground="White" Padding="20,12" FontWeight="SemiBold" MinWidth="120" MinHeight="44" Click="SaveDepartment_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}" MinHeight="44">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button Content="Очистить" Background="#F5F5F7" Foreground="#666" Padding="20,12" Margin="10,0,0,0" FontWeight="Medium" MinWidth="100" MinHeight="44" Click="ClearForm_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}" MinHeight="44">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

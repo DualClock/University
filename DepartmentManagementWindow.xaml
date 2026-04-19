@@ -1,0 +1,139 @@
+<Window x:Class="UniversitySystem.DepartmentManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Управление кафедрами"
+        Height="600"
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F8F9FA">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,15">
+            <TextBlock Text="🏛️" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBlock Text="Управление кафедрами" FontSize="20" FontWeight="Bold" Foreground="#333"/>
+        </StackPanel>
+
+        <!-- Основной контент -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="320"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Список кафедр -->
+            <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Фильтры -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                        <ComboBox x:Name="FacultyFilterComboBox" 
+                                  Width="200" 
+                                  DisplayMemberPath="Name"
+                                  SelectionChanged="FacultyFilter_SelectionChanged"
+                                  materialDesign:HintAssist.Hint="Фильтр по факультету"/>
+                        <Button Content="➕ Добавить" FontSize="12"
+                                Background="#4A00E0" 
+                                Foreground="White" 
+                                Padding="0" 
+                                BorderThickness="0"
+                                Margin="10,0,0,0"
+                                Click="AddDepartment_Click" Width="87"/>
+                        <Button Content="✏️ Редактор" FontSize="12"
+                                Background="#8E2DE2" 
+                                Foreground="White" 
+                                Padding="0" 
+                                BorderThickness="0"
+                                Click="EditDepartment_Click" Width="91"/>
+                        <Button Content="🗑️ Удалить" FontSize="12"
+                                Background="#FF4444" 
+                                Foreground="White" 
+                                Padding="15,8" 
+                                BorderThickness="0"
+                                Click="DeleteDepartment_Click"/>
+                    </StackPanel>
+
+                    <!-- Список -->
+                    <DataGrid Grid.Row="1" 
+                             x:Name="DepartmentDataGrid"
+                             Margin="0,10,0,0"
+                             AutoGenerateColumns="False"
+                             CanUserAddRows="False"
+                             CanUserDeleteRows="False"
+                             SelectionMode="Single"
+                             SelectionChanged="DepartmentDataGrid_SelectionChanged"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Код" Binding="{Binding Code}" Width="80"/>
+                            <DataGridTextColumn Header="Факультет" Binding="{Binding Faculty.Name}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- Панель деталей -->
+            <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="20" Margin="20,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Детали кафедры" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,15"/>
+                    
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Название *" FontSize="12" Foreground="#666" Margin="0,0,0,5"/>
+                        <TextBox x:Name="DepartmentNameTextBox" 
+                                 Background="#F5F5F5" 
+                                 BorderThickness="1" 
+                                 BorderBrush="#E0E0E0" 
+                                 Padding="10"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Код *" FontSize="12" Foreground="#666" Margin="0,0,0,5"/>
+                        <TextBox x:Name="DepartmentCodeTextBox" 
+                                 Background="#F5F5F5" 
+                                 BorderThickness="1" 
+                                 BorderBrush="#E0E0E0" 
+                                 Padding="10"
+                                 MaxLength="20"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Факультет *" FontSize="12" Foreground="#666" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="FacultyComboBox" 
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
+                                  Background="#F5F5F5"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                        <Button x:Name="SaveDepartmentButton" 
+                                Content="💾 Сохранить" 
+                                Background="#4A00E0" 
+                                Foreground="White" 
+                                Padding="15,8" 
+                                BorderThickness="0"
+                                Click="SaveDepartment_Click"/>
+                        <Button Content="❌ Отмена" 
+                                Background="#999" 
+                                Foreground="White" 
+                                Padding="15,8" 
+                                BorderThickness="0"
+                                Margin="10,0,0,0"
+                                Click="CancelDepartment_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

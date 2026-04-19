@@ -1,0 +1,12 @@
+using System; using System.Collections.Generic; using System.Linq; using System.Windows; using System.Windows.Controls; using Microsoft.EntityFrameworkCore; using UniversitySystem.Data; using UniversitySystem.Models;
+namespace UniversitySystem.Controls{
+public partial class DisciplineManagementControl : UserControl{
+    private List<Discipline> _disciplines = new(); private Discipline? _selected;
+    public DisciplineManagementControl(){ InitializeComponent(); _ = LoadDisciplines(); }
+    private async System.Threading.Tasks.Task LoadDisciplines(){ using var db = new AppDbContext(); _disciplines = await db.Disciplines.ToListAsync(); DisciplineDataGrid.ItemsSource = _disciplines; }
+    private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e){ var q = SearchTextBox.Text.Trim().ToLower(); DisciplineDataGrid.ItemsSource = string.IsNullOrEmpty(q) ? _disciplines : _disciplines.Where(d => d.Name.ToLower().Contains(q) || d.Code.ToLower().Contains(q)).ToList(); }
+    private void AddDiscipline_Click(object sender, RoutedEventArgs e){ _selected = null; NameTextBox.Text = CodeTextBox.Text = CreditsTextBox.Text = ""; }
+    private void DisciplineDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e){ if (DisciplineDataGrid.SelectedItem is Discipline d){ _selected = d; NameTextBox.Text = d.Name; CodeTextBox.Text = d.Code; CreditsTextBox.Text = d.Credits.ToString(); } }
+    private async void SaveDiscipline_Click(object sender, RoutedEventArgs e){ if (string.IsNullOrWhiteSpace(NameTextBox.Text)){ MessageBox.Show("Введите название"); return; } try{ using var db = new AppDbContext(); int credits = int.TryParse(CreditsTextBox.Text, out int c) ? c : 0; if (_selected == null){ db.Disciplines.Add(new Discipline { Name = NameTextBox.Text.Trim(), Code = CodeTextBox.Text.Trim(), Credits = credits }); } else { var d = await db.Disciplines.FindAsync(_selected.Id); if (d != null){ d.Name = NameTextBox.Text.Trim(); d.Code = CodeTextBox.Text.Trim(); d.Credits = credits; db.Update(d); } } await db.SaveChangesAsync(); await LoadDisciplines(); ClearForm(); MessageBox.Show("Сохранено"); } catch (Exception ex){ MessageBox.Show($"Ошибка: {ex.Message}"); } }
+    private void CancelDiscipline_Click(object sender, RoutedEventArgs e) => ClearForm();
+    private void ClearForm(){ _selected = null; NameTextBox.Text = CodeTextBox.Text = CreditsTextBox.Text = ""; }}}

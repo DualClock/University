@@ -1,0 +1,93 @@
+<UserControl x:Class="UniversitySystem.Controls.ReportsControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="#F8F9FA">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="📊" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBlock Text="Статистика по успеваемости" FontSize="20" FontWeight="Bold" Foreground="#333"/>
+        </StackPanel>
+        
+        <TabControl x:Name="TabControlReports" Grid.Row="1">
+            <!-- Вкладка: Отчёт по группе -->
+            <TabItem Header="📋 По группе">
+                <Border Background="White" CornerRadius="12" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                            <ComboBox x:Name="GroupFilter" Width="200" Padding="10" DisplayMemberPath="Name" SelectionChanged="GroupFilter_SelectionChanged"/>
+                            <Button Content="📊 Сформировать отчёт" Background="#4A00E0" Foreground="White" Padding="15,8" BorderThickness="0" Margin="10,0,0,0" Click="GenerateReport_Click"/>
+                        </StackPanel>
+                        <DataGrid Grid.Row="1" x:Name="ReportDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="Transparent" BorderThickness="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Студент" Binding="{Binding StudentName}" Width="*"/>
+                                <DataGridTextColumn Header="Группа" Binding="{Binding GroupName}" Width="100"/>
+                                <DataGridTextColumn Header="Средний балл" Binding="{Binding AvgGrade, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Grid.Row="2" Margin="0,15,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="Средний балл группы: " FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtAverageGrade" Text="0.00" FontWeight="Bold" Foreground="#4A00E0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                <TextBlock Text="Отличники: " FontWeight="Bold" Foreground="#2E7D32"/>
+                                <TextBlock x:Name="ExcellentCount" Text="0" FontWeight="Bold" Foreground="#2E7D32" Margin="0,0,20,0"/>
+                                <TextBlock Text="Хорошисты: " FontWeight="Bold" Foreground="#1976D2"/>
+                                <TextBlock x:Name="GoodCount" Text="0" FontWeight="Bold" Foreground="#1976D2" Margin="0,0,20,0"/>
+                                <TextBlock Text="Должники: " FontWeight="Bold" Foreground="#D32F2F"/>
+                                <TextBlock x:Name="FailCount" Text="0" FontWeight="Bold" Foreground="#D32F2F"/>
+                            </StackPanel>
+                            <Button Content="📥 Экспорт в Excel" Background="#28A745" Foreground="White" Padding="15,8" Margin="0,10,0,0" Click="BtnExportGroupReport_Click" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </TabItem>
+            
+            <!-- Вкладка: Отчёт по факультету -->
+            <TabItem Header="🏛️ По факультету">
+                <Border Background="White" CornerRadius="12" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                            <ComboBox x:Name="FacultyFilter" Width="250" Padding="10" DisplayMemberPath="Name" SelectionChanged="FacultyFilter_SelectionChanged"/>
+                            <Button Content="📊 Сформировать отчёт" Background="#4A00E0" Foreground="White" Padding="15,8" BorderThickness="0" Margin="10,0,0,0" Click="GenerateReport_Click"/>
+                        </StackPanel>
+                        <DataGrid Grid.Row="1" x:Name="FacultyReportDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="Transparent" BorderThickness="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Кафедра" Binding="{Binding DepartmentName}" Width="*"/>
+                                <DataGridTextColumn Header="Групп" Binding="{Binding GroupCount}" Width="80"/>
+                                <DataGridTextColumn Header="Студентов" Binding="{Binding StudentCount}" Width="100"/>
+                                <DataGridTextColumn Header="Средний балл" Binding="{Binding AvgGrade, StringFormat=F2}" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Grid.Row="2" Margin="0,15,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="Групп: " FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtFacultyTotalGroups" Text="0" Margin="0,0,20,0"/>
+                                <TextBlock Text="Студентов: " FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtFacultyTotalStudents" Text="0" Margin="0,0,20,0"/>
+                                <TextBlock Text="Средний балл: " FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtFacultyAverage" Text="0.00" FontWeight="Bold" Foreground="#4A00E0"/>
+                            </StackPanel>
+                            <Button Content="📥 Экспорт в Excel" Background="#28A745" Foreground="White" Padding="15,8" Click="BtnExportFacultyReport_Click" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

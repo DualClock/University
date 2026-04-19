@@ -1,0 +1,162 @@
+﻿<UserControl x:Class="UniversitySystem.StudentPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Margin="16">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Студенческий портал" 
+                      FontSize="28" 
+                      FontWeight="Bold"
+                      Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+            <TextBlock Text="Учебная информация и успеваемость" 
+                      FontSize="14"
+                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                      Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Вкладки студента -->
+        <TabControl Grid.Row="1">
+            <!-- Расписание -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CalendarClock" Margin="0,0,8,0"/>
+                        <TextBlock Text="Расписание"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <DataGrid x:Name="DgSchedule" 
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="День недели" Binding="{Binding DayOfWeek}" Width="120"/>
+                            <DataGridTextColumn Header="Время" Binding="{Binding StartTime}" Width="120"/>
+                            <DataGridTextColumn Header="Дисциплина" Binding="{Binding Discipline.Name}" Width="*"/>
+                            <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="100"/>
+                            <DataGridTextColumn Header="Аудитория" Binding="{Binding Room}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Оценки -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="StarCircle" Margin="0,0,8,0"/>
+                        <TextBlock Text="Оценки"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBlock Text="Средний балл: " 
+                                  FontSize="18" 
+                                  FontWeight="Bold"
+                                  VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TxtAverageGrade" 
+                                  Text="0.00" 
+                                  FontSize="24" 
+                                  FontWeight="Bold"
+                                  Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                  VerticalAlignment="Center"
+                                  Margin="8,0,0,0"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+                        <ComboBox x:Name="CmbSemesterFilter" 
+                                 materialDesign:HintAssist.Hint="Семестр"
+                                 Width="150"
+                                 Margin="0,0,16,0"
+                                 SelectionChanged="CmbSemesterFilter_SelectionChanged">
+                            <ComboBoxItem Content="Все семестры" Tag="0"/>
+                            <ComboBoxItem Content="Семестр 1" Tag="1"/>
+                            <ComboBoxItem Content="Семестр 2" Tag="2"/>
+                            <ComboBoxItem Content="Семестр 3" Tag="3"/>
+                            <ComboBoxItem Content="Семестр 4" Tag="4"/>
+                            <ComboBoxItem Content="Семестр 5" Tag="5"/>
+                            <ComboBoxItem Content="Семестр 6" Tag="6"/>
+                        </ComboBox>
+                        
+                        <ComboBox x:Name="CmbAcademicYearFilter" 
+                                 materialDesign:HintAssist.Hint="Учебный год"
+                                 Width="200"
+                                 SelectionChanged="CmbAcademicYearFilter_SelectionChanged"/>
+                    </StackPanel>
+                    
+                    <DataGrid x:Name="DgGrades" 
+                             Grid.Row="2"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             MouseDoubleClick="DgGrades_MouseDoubleClick"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Дисциплина" Binding="{Binding Discipline.Name}" Width="*"/>
+                            <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="100"/>
+                            <DataGridTextColumn Header="Оценка" Binding="{Binding Value}" Width="80"/>
+                            <DataGridTextColumn Header="Семестр" Binding="{Binding Semester}" Width="80"/>
+                            <DataGridTextColumn Header="Учебный год" Binding="{Binding AcademicYear}" Width="100"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+                    <!-- Детальная история по дисциплине -->
+                    <materialDesign:Card Grid.Row="2" Margin="0,16,0,0" Padding="16" Visibility="Collapsed" x:Name="CardGradeHistory">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <TextBlock Text="История оценок по дисциплине" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <Button Content="✕ Закрыть" Margin="16,0,0,0" Click="BtnCloseGradeHistory_Click"/>
+                            </StackPanel>
+                            <DataGrid x:Name="DgGradeHistory" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
+                                    <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="100"/>
+                                    <DataGridTextColumn Header="Оценка" Binding="{Binding Value}" Width="80"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </materialDesign:Card>
+                </Grid>
+            </TabItem>
+
+            <!-- Уведомления -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="BellRing" Margin="0,0,8,0"/>
+                        <TextBlock Text="Уведомления"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="16">
+                    <DataGrid x:Name="DgNotifications" 
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserAddRows="False"
+                             materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Заголовок" Binding="{Binding Title}" Width="200"/>
+                            <DataGridTextColumn Header="Сообщение" Binding="{Binding Message}" Width="*"/>
+                            <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="100"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="150"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

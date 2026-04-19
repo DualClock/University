@@ -1,0 +1,364 @@
+﻿<Window x:Class="UniversitySystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="University System"
+        Height="750"
+        Width="1150"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F7">
+    
+    <Window.Resources>
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="15" Direction="320" ShadowDepth="3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#4A00E0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#8E2DE2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Foreground" Value="#4A00E0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#4A00E0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F0EDFB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MenuItemStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Padding" Value="16,14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="IconText" FontSize="18" Margin="0,0,12,0" Opacity="0.8"/>
+                                <ContentPresenter VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5B11D9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Боковое меню -->
+        <Border Grid.Column="0" CornerRadius="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#4A00E0" Offset="0"/>
+                    <GradientStop Color="#6A1B9A" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Заголовок меню -->
+                <Border Grid.Row="0" Padding="20,28,20,24">
+                    <StackPanel>
+                        <TextBlock Text="🎓" FontSize="42" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock Text="University System" 
+                                   FontSize="17" 
+                                   FontWeight="Bold" 
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="UserGreeting" 
+                                   Text="" 
+                                   FontSize="12" 
+                                   Foreground="White"
+                                   Opacity="0.75"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Меню навигации -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="12,0">
+                    <StackPanel>
+                        <!-- Админ-панель -->
+                        <StackPanel x:Name="AdminMenu" Visibility="Collapsed">
+                            <TextBlock Text="УПРАВЛЕНИЕ" FontSize="10" Foreground="#FFFFFF" Opacity="0.6" Margin="18,8,0,12" FontWeight="Bold"/>
+                            
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenFacultyManagement" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🏛️" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Факультеты" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenDepartmentManagement" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🏢" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Кафедры" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenGroupManagement" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="👥" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Группы" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenDisciplineManagement" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📚" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Дисциплины" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenUserManagement" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="👤" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Пользователи" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenCurriculumManagement" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📋" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Учебный план" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Преподаватель -->
+                        <StackPanel x:Name="TeacherMenu" Visibility="Collapsed">
+                            <TextBlock Text="РАБОТА" FontSize="10" Foreground="#FFFFFF" Opacity="0.6" Margin="18,8,0,12" FontWeight="Bold"/>
+                            
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenGradeManagement" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📝" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Ввод оценок" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenSchedule" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📅" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Расписание" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenExport" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📊" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Экспорт данных" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Студент -->
+                        <StackPanel x:Name="StudentMenu" Visibility="Collapsed">
+                            <TextBlock Text="ЛИЧНЫЙ КАБИНЕТ" FontSize="10" Foreground="#FFFFFF" Opacity="0.6" Margin="18,8,0,12" FontWeight="Bold"/>
+                            
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenGradesView" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📈" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Мои оценки" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenSchedule" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📅" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Расписание" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Отчеты -->
+                        <StackPanel x:Name="ReportsMenu" Visibility="Collapsed">
+                            <TextBlock Text="АНАЛИТИКА" FontSize="10" Foreground="#FFFFFF" Opacity="0.6" Margin="18,8,0,12" FontWeight="Bold"/>
+                            
+                            <Button Style="{StaticResource MenuItemStyle}" Click="OpenReports" Margin="0,0,0,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📊" Margin="0,0,0,0"/>
+                                    <TextBlock Text="Статистика" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Нижняя панель -->
+                <Border Grid.Row="2" Padding="16,16">
+                    <Button x:Name="LogoutButton" 
+                            Content="Выйти из системы" 
+                            Style="{StaticResource MenuItemStyle}"
+                            Background="#5B11D9"
+                            Click="BtnLogout_Click"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Основная область -->
+        <Grid Grid.Column="1" Margin="28,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,24">
+                <TextBlock x:Name="PageTitle" 
+                           Text="Главная" 
+                           FontSize="26" 
+                           FontWeight="Bold" 
+                           Foreground="#1A1A2E"
+                           Margin="0,0,16,0"/>
+                <TextBlock x:Name="PageSubtitle" 
+                           Text="" 
+                           FontSize="14" 
+                           Foreground="#666"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Контент -->
+            <Grid Grid.Row="1" x:Name="ContentGrid">
+                <!-- Приветственный экран -->
+                <Grid x:Name="WelcomeGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Левая колонка -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,0,12,0">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="👋 Добро пожаловать!" FontSize="20" FontWeight="Bold" Margin="0,0,0,12" Foreground="#1A1A2E"/>
+                                <TextBlock Text="Выберите раздел в меню слева для начала работы с системой управления университетом." 
+                                           FontSize="14" 
+                                           Foreground="#555"
+                                           TextWrapping="Wrap"
+                                           LineHeight="22"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardStyle}" Margin="0,16,0,0">
+                            <StackPanel>
+                                <TextBlock Text="⚡ Быстрые действия" FontSize="16" FontWeight="Bold" Margin="0,0,0,16" Foreground="#1A1A2E"/>
+                                <Button x:Name="QuickAction1" 
+                                        Content="📈 Просмотреть оценки" 
+                                        Style="{StaticResource ModernButton}"
+                                        Height="46"
+                                        Margin="0,6,0,0"
+                                        HorizontalAlignment="Stretch"/>
+                                <Button x:Name="QuickAction2" 
+                                        Content="📅 Расписание занятий" 
+                                        Style="{StaticResource SecondaryButton}"
+                                        Height="46"
+                                        Margin="0,10,0,0"
+                                        HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Правая колонка -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="12,0,0,0">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="📊 Статистика системы" FontSize="16" FontWeight="Bold" Margin="0,0,0,16" Foreground="#1A1A2E"/>
+                                <UniformGrid Columns="3" HorizontalAlignment="Center">
+                                    <Border Background="#EDE7F6" CornerRadius="12" Padding="16,12" Margin="4">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock x:Name="TxtFacultyCount" Text="0" FontSize="22" FontWeight="Bold" Foreground="#7C4DFF" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Факультеты" FontSize="11" Foreground="#666" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#E3F2FD" CornerRadius="12" Padding="16,12" Margin="4">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock x:Name="TxtDepartmentCount" Text="0" FontSize="22" FontWeight="Bold" Foreground="#42A5F5" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Кафедры" FontSize="11" Foreground="#666" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#FFF3E0" CornerRadius="12" Padding="16,12" Margin="4">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock x:Name="TxtGroupCount" Text="0" FontSize="22" FontWeight="Bold" Foreground="#FFA726" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Группы" FontSize="11" Foreground="#666" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
