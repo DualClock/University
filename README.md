@@ -151,21 +151,7 @@ UniversitySystem/
 
 ## 📸 Скриншоты
 
-### Окно входа
-```
-┌─────────────────────────────────┐
-│      🎓 UniversitySystem        │
-│                                 │
-│   ┌─────────────────────────┐   │
-│   │     🔐 Вход в систему    │   │
-│   └─────────────────────────┘   │
-│                                 │
-│   Логин:    [____________]      │
-│   Пароль:   [____________]      │
-│                                 │
-│         [Войти]                │
-└─────────────────────────────────┘
-```
+`
 
 ### Панель администратора
 - ✅ Управление факультетами, кафедрами, группами
@@ -206,30 +192,7 @@ optionsBuilder.UseSqlite("Data Source=UniversityDB.db");
 bin/Debug/net10.0-windows/Logs/log_YYYY-MM-DD.txt
 ```
 
----
 
-## 🐛 Возможные проблемы
-
-### ❌ "Cannot find package"
-```bash
-dotnet restore
-```
-
-### ❌ Ошибка подключения к БД
-```bash
-# Проверьте что LocalDB запущен
-sqllocaldb info
-# Перезапустите при необходимости
-sqllocaldb start MSSQLLocalDB
-```
-
-### ❌ Access denied при экспорте
-Запустите Visual Studio от имени администратора.
-
-### ❌ Windows Forms/WPF not found
-```bash
-dotnet workload install wpf
-```
 
 ---
 
