@@ -13,6 +13,18 @@ namespace UniversitySystem;
 public partial class StudentPanel : UserControl
 {
     private List<Grade> _allGrades = new();
+    private List<GradeRow> _allGradeRows = new();
+
+    private sealed class GradeRow
+    {
+        public int DisciplineId { get; set; }
+        public string DisciplineName { get; set; } = "Не указана";
+        public string Type { get; set; } = string.Empty;
+        public decimal Value { get; set; }
+        public int Semester { get; set; }
+        public string AcademicYear { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+    }
 
     public StudentPanel()
     {
@@ -60,6 +72,47 @@ public partial class StudentPanel : UserControl
             .AsNoTracking()
             .ToListAsync();
 
+        _allGradeRows = _allGrades
+            .Select(g => new GradeRow
+            {
+                DisciplineId = g.DisciplineId,
+                DisciplineName = string.IsNullOrWhiteSpace(g.Discipline?.Name)
+                    ? "Неизвестная дисциплина"
+                    : g.Discipline.Name,
+                Type = g.Type,
+                Value = g.Value,
+                Semester = g.Semester,
+                AcademicYear = g.AcademicYear,
+                Date = g.Date
+            })
+            .ToList();
+
+        // Дополнительная защита на случай неконсистентных данных/не загруженной навигации:
+        // подтягиваем названия дисциплин по Id и заполняем пустые значения.
+        var unresolvedDisciplineIds = _allGradeRows
+            .Where(r => string.IsNullOrWhiteSpace(r.DisciplineName) || r.DisciplineName == "Неизвестная дисциплина")
+            .Select(r => r.DisciplineId)
+            .Distinct()
+            .ToList();
+
+        if (unresolvedDisciplineIds.Count > 0)
+        {
+            var disciplineMap = await db.Disciplines
+                .Where(d => unresolvedDisciplineIds.Contains(d.Id))
+                .AsNoTracking()
+                .ToDictionaryAsync(d => d.Id, d => d.Name);
+
+            foreach (var row in _allGradeRows)
+            {
+                if ((string.IsNullOrWhiteSpace(row.DisciplineName) || row.DisciplineName == "Неизвестная дисциплина")
+                    && disciplineMap.TryGetValue(row.DisciplineId, out var resolvedName)
+                    && !string.IsNullOrWhiteSpace(resolvedName))
+                {
+                    row.DisciplineName = resolvedName;
+                }
+            }
+        }
+
         ApplyFilters();
     }
 
@@ -105,7 +158,7 @@ public partial class StudentPanel : UserControl
             return;
         }
 
-        var filteredGrades = _allGrades.AsEnumerable();
+        var filteredGrades = _allGradeRows.AsEnumerable();
 
         if (CmbSemesterFilter?.SelectedItem is ComboBoxItem semesterItem && semesterItem.Tag != null)
         {
@@ -150,7 +203,7 @@ public partial class StudentPanel : UserControl
 
     private async void DgGrades_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        if (DgGrades.SelectedItem is Grade selectedGrade)
+        if (DgGrades.SelectedItem is GradeRow selectedGrade)
         {
             await LoadGradeHistoryAsync(selectedGrade.DisciplineId);
         }
@@ -161,12 +214,19 @@ public partial class StudentPanel : UserControl
         await using var db = new AppDbContext();
         var userId = RbacService.CurrentUserId;
 
+        // Получаем название дисциплины
+        var discipline = await db.Disciplines
+            .Where(d => d.Id == disciplineId)
+            .Select(d => d.Name)
+            .FirstOrDefaultAsync();
+
         var history = await db.Grades
             .Where(g => g.StudentId == userId && g.DisciplineId == disciplineId)
             .OrderByDescending(g => g.Date)
             .AsNoTracking()
             .ToListAsync();
 
+        TxtDisciplineHistoryName.Text = $"История оценок: {discipline ?? "Неизвестно"}";
         DgGradeHistory.ItemsSource = history;
         CardGradeHistory.Visibility = Visibility.Visible;
     }

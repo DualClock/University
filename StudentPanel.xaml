@@ -98,35 +98,54 @@
                                  SelectionChanged="CmbAcademicYearFilter_SelectionChanged"/>
                     </StackPanel>
                     
+                    <!-- Основная таблица оценок -->
                     <DataGrid x:Name="DgGrades" 
                              Grid.Row="2"
                              AutoGenerateColumns="False"
                              IsReadOnly="True"
                              CanUserAddRows="False"
+                             CanUserResizeColumns="True"
+                             CanUserReorderColumns="False"
+                             HeadersVisibility="Column"
+                             HorizontalScrollBarVisibility="Auto"
+                             ColumnHeaderHeight="42"
                              MouseDoubleClick="DgGrades_MouseDoubleClick"
                              materialDesign:DataGridAssist.CellPadding="13,8,8,8">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="12,8"/>
+                            </Style>
+                        </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Дисциплина" Binding="{Binding Discipline.Name}" Width="*"/>
-                            <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="100"/>
-                            <DataGridTextColumn Header="Оценка" Binding="{Binding Value}" Width="80"/>
-                            <DataGridTextColumn Header="Семестр" Binding="{Binding Semester}" Width="80"/>
-                            <DataGridTextColumn Header="Учебный год" Binding="{Binding AcademicYear}" Width="100"/>
-                            <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
+                            <DataGridTemplateColumn Header="Дисциплина" Width="2*" MinWidth="220">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DisciplineName, TargetNullValue=Неизвестная дисциплина, FallbackValue=Неизвестная дисциплина}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Тип оценки" Binding="{Binding Type}" Width="140" MinWidth="120"/>
+                            <DataGridTextColumn Header="Оценка" Binding="{Binding Value}" Width="90" MinWidth="80"/>
+                            <DataGridTextColumn Header="Семестр" Binding="{Binding Semester}" Width="90" MinWidth="80"/>
+                            <DataGridTextColumn Header="Учебный год" Binding="{Binding AcademicYear}" Width="130" MinWidth="120"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="130" MinWidth="120"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     
-                    <!-- Детальная история по дисциплине -->
-                    <materialDesign:Card Grid.Row="2" Margin="0,16,0,0" Padding="16" Visibility="Collapsed" x:Name="CardGradeHistory">
+                    <!-- Детальная история по дисциплине (отдельный слой) -->
+                    <materialDesign:Card Grid.Row="2" Margin="0,16,0,0" Padding="16" Visibility="Collapsed" x:Name="CardGradeHistory" Panel.ZIndex="100">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                                <TextBlock Text="История оценок по дисциплине" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TxtDisciplineHistoryName" Text="История оценок" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                                 <Button Content="✕ Закрыть" Margin="16,0,0,0" Click="BtnCloseGradeHistory_Click"/>
                             </StackPanel>
-                            <DataGrid x:Name="DgGradeHistory" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
+                            <DataGrid x:Name="DgGradeHistory" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" materialDesign:DataGridAssist.CellPadding="13,8,8,8">
                                 <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Тип оценки" Binding="{Binding Type}" Width="*"/>
+                                    <DataGridTextColumn Header="Оценка" Binding="{Binding Value}" Width="100"/>
                                     <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
-                                    <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="100"/>
-                                    <DataGridTextColumn Header="Оценка" Binding="{Binding Value}" Width="80"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>

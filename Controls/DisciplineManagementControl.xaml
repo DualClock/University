@@ -24,7 +24,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBox x:Name="SearchTextBox" Width="250" Padding="10" TextChanged="SearchTextBox_TextChanged"/>
-                        <Button Content="➕ Добавить" Background="#4A00E0" Foreground="White" Padding="16,10" BorderThickness="0" Margin="10,0,0,0" MinWidth="110" Click="AddDiscipline_Click"/>
+                        <Button Content="➕ Добавить" Background="#4A00E0" Foreground="White" Padding="16,10" BorderThickness="0" Margin="10,0,0,0" MinWidth="120" MinHeight="40" Click="AddDiscipline_Click"/>
                     </StackPanel>
                     <DataGrid Grid.Row="1" x:Name="DisciplineDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" SelectionChanged="DisciplineDataGrid_SelectionChanged" Background="Transparent" BorderThickness="0">
                         <DataGrid.Columns>
@@ -52,8 +52,8 @@
                         <TextBox x:Name="CreditsTextBox" Padding="10"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                        <Button Content="💾 Сохранить" Background="#4A00E0" Foreground="White" Padding="16,10" MinWidth="110" Click="SaveDiscipline_Click"/>
-                        <Button Content="❌ Отмена" Background="#999" Foreground="White" Padding="16,10" Margin="10,0,0,0" Click="CancelDiscipline_Click"/>
+                        <Button Content="💾 Сохранить" Background="#4A00E0" Foreground="White" Padding="16,10" MinWidth="120" MinHeight="40" Click="SaveDiscipline_Click"/>
+                        <Button Content="❌ Отмена" Background="#E0E0E0" Foreground="#333" Padding="16,10" Margin="10,0,0,0" MinWidth="100" MinHeight="40" Click="CancelDiscipline_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

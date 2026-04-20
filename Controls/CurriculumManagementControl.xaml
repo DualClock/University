@@ -24,7 +24,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
                         <ComboBox x:Name="GroupFilter" Width="150" Padding="10" DisplayMemberPath="Name" SelectionChanged="FilterChanged"/>
-                        <Button Content="➕ Добавить" Background="#4A00E0" Foreground="White" Padding="16,10" BorderThickness="0" Margin="10,0,0,0" MinWidth="110" Click="AddCurriculum_Click"/>
+                        <Button Content="➕ Добавить" Background="#4A00E0" Foreground="White" Padding="16,10" BorderThickness="0" Margin="10,0,0,0" MinWidth="120" MinHeight="40" Click="AddCurriculum_Click"/>
                     </StackPanel>
                     <DataGrid Grid.Row="1" x:Name="CurriculumDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" SelectionChanged="CurriculumDataGrid_SelectionChanged" Background="Transparent" BorderThickness="0">
                         <DataGrid.Columns>
@@ -57,8 +57,8 @@
                         <TextBox x:Name="YearTextBox" Padding="10"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
-                        <Button Content="💾 Сохранить" Background="#4A00E0" Foreground="White" Padding="16,10" MinWidth="110" Click="SaveCurriculum_Click"/>
-                        <Button Content="❌ Отмена" Background="#999" Foreground="White" Padding="16,10" Margin="10,0,0,0" Click="CancelCurriculum_Click"/>
+                        <Button Content="💾 Сохранить" Background="#4A00E0" Foreground="White" Padding="16,10" MinWidth="120" MinHeight="40" Click="SaveCurriculum_Click"/>
+                        <Button Content="❌ Отмена" Background="#E0E0E0" Foreground="#333" Padding="16,10" Margin="10,0,0,0" MinWidth="100" MinHeight="40" Click="CancelCurriculum_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

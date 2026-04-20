@@ -27,15 +27,7 @@
                     
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
                         <TextBox x:Name="SearchTextBox" Width="260" Padding="14,10" FontSize="14" BorderThickness="0" Background="#F5F5F7" TextChanged="SearchTextBox_TextChanged"/>
-                        <Button Content="➕ Добавить" Background="#4A00E0" Foreground="White" Padding="16,10" BorderThickness="0" Margin="12,0,0,0" FontWeight="SemiBold" MinWidth="110" Click="AddFaculty_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}" MinHeight="40">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+                        <Button Content="➕ Добавить" Background="#4A00E0" Foreground="White" Padding="16,10" BorderThickness="0" Margin="12,0,0,0" FontWeight="SemiBold" MinWidth="120" MinHeight="40" Click="AddFaculty_Click"/>
                     </StackPanel>
                     
                     <DataGrid Grid.Row="1" x:Name="FacultyDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" SelectionChanged="FacultyDataGrid_SelectionChanged" Background="Transparent" BorderThickness="0" RowHeight="48" HeadersVisibility="Column">
@@ -59,24 +51,8 @@
                     <TextBox x:Name="FacultyNameTextBox" Padding="14,12" FontSize="14" Background="#F5F5F7" BorderThickness="0" Margin="0,0,0,20"/>
                     
                     <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                        <Button Content="💾 Сохранить" Background="#4A00E0" Foreground="White" Padding="20,12" FontWeight="SemiBold" MinWidth="120" Click="SaveFaculty_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}" MinHeight="44">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        <Button Content="Очистить" Background="#F5F5F7" Foreground="#666" Padding="20,12" Margin="10,0,0,0" FontWeight="Medium" MinWidth="100" Click="ClearForm_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}" MinHeight="44">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+                        <Button Content="💾 Сохранить" Background="#4A00E0" Foreground="White" Padding="20,12" FontWeight="SemiBold" MinWidth="120" MinHeight="44" Click="SaveFaculty_Click"/>
+                        <Button Content="Очистить" Background="#E0E0E0" Foreground="#333" Padding="20,12" Margin="10,0,0,0" FontWeight="Medium" MinWidth="100" MinHeight="44" Click="ClearForm_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
