@@ -45,9 +45,9 @@ public partial class TeacherPanel : UserControl
         _disciplines = await db.Disciplines.AsNoTracking().ToListAsync();
         DgDisciplines.ItemsSource = _disciplines;
 
-        CmbDisciplineForGrade.ItemsSource = _disciplines;
-        CmbDisciplineForGrade.DisplayMemberPath = "Name";
-        CmbDisciplineForGrade.SelectedValuePath = "Id";
+        CmbGradeDiscipline.ItemsSource = _disciplines;
+        CmbGradeDiscipline.DisplayMemberPath = "Name";
+        CmbGradeDiscipline.SelectedValuePath = "Id";
     }
 
     private async Task LoadStudentsAsync()
@@ -80,6 +80,14 @@ public partial class TeacherPanel : UserControl
         CmbExamDiscipline.DisplayMemberPath = "Name";
         CmbExamDiscipline.SelectedValuePath = "Id";
 
+        CmbGradeGroup.ItemsSource = _groups;
+        CmbGradeGroup.DisplayMemberPath = "Name";
+        CmbGradeGroup.SelectedValuePath = "Id";
+
+        CmbGradeDiscipline.ItemsSource = _disciplines;
+        CmbGradeDiscipline.DisplayMemberPath = "Name";
+        CmbGradeDiscipline.SelectedValuePath = "Id";
+
         CmbDebtorsGroup.ItemsSource = _groups;
         CmbDebtorsGroup.DisplayMemberPath = "Name";
         CmbDebtorsGroup.SelectedValuePath = "Id";
@@ -97,9 +105,56 @@ public partial class TeacherPanel : UserControl
     {
     }
 
+    private async void CmbGradeGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (CmbGradeGroup.SelectedValue == null) return;
+
+        int groupId = (int)CmbGradeGroup.SelectedValue;
+        await using var db = new AppDbContext();
+        var groupStudents = await db.Users
+            .Where(u => u.GroupId == groupId && u.Role == "Student")
+            .AsNoTracking()
+            .ToListAsync();
+
+        CmbStudentForGrade.ItemsSource = groupStudents;
+        CmbStudentForGrade.DisplayMemberPath = "FullName";
+        CmbStudentForGrade.SelectedValuePath = "Id";
+    }
+
+    private async void CmbGradeDiscipline_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (CmbGradeGroup.SelectedValue == null || CmbGradeDiscipline.SelectedValue == null) return;
+
+        int groupId = (int)CmbGradeGroup.SelectedValue;
+        int disciplineId = (int)CmbGradeDiscipline.SelectedValue;
+
+        await using var db = new AppDbContext();
+        var groupStudentIds = await db.UserGroups
+            .Where(ug => ug.GroupId == groupId)
+            .Select(ug => ug.UserId)
+            .ToListAsync();
+
+        var studentsWithGrades = await db.Grades
+            .Where(g => g.DisciplineId == disciplineId && groupStudentIds.Contains(g.StudentId))
+            .Select(g => g.StudentId)
+            .Distinct()
+            .ToListAsync();
+
+        var allGroupStudents = await db.Users
+            .Where(u => u.GroupId == groupId && u.Role == "Student")
+            .AsNoTracking()
+            .ToListAsync();
+
+        var studentsWithoutGrades = allGroupStudents.Where(s => !studentsWithGrades.Contains(s.Id)).ToList();
+
+        CmbStudentForGrade.ItemsSource = studentsWithoutGrades;
+        CmbStudentForGrade.DisplayMemberPath = "FullName";
+        CmbStudentForGrade.SelectedValuePath = "Id";
+    }
+
     private async void BtnAddGrade_Click(object sender, RoutedEventArgs e)
     {
-        if (CmbStudentForGrade.SelectedValue == null || CmbDisciplineForGrade.SelectedValue == null || 
+        if (CmbStudentForGrade.SelectedValue == null || CmbGradeDiscipline.SelectedValue == null ||
             CmbGradeType.SelectedItem == null || string.IsNullOrWhiteSpace(TxtGradeValue.Text))
         {
             MessageBox.Show("Заполните все поля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -118,7 +173,7 @@ public partial class TeacherPanel : UserControl
             var grade = new Grade
             {
                 StudentId = (int)CmbStudentForGrade.SelectedValue,
-                DisciplineId = (int)CmbDisciplineForGrade.SelectedValue,
+                DisciplineId = (int)CmbGradeDiscipline.SelectedValue,
                 Type = ((ComboBoxItem)CmbGradeType.SelectedItem).Content.ToString() ?? "Seminar",
                 Value = value,
                 Date = DateTime.UtcNow,
@@ -129,7 +184,7 @@ public partial class TeacherPanel : UserControl
             await db.SaveChangesAsync();
 
             var student = await db.Users.FindAsync((int)CmbStudentForGrade.SelectedValue);
-            var discipline = await db.Disciplines.FindAsync((int)CmbDisciplineForGrade.SelectedValue);
+            var discipline = await db.Disciplines.FindAsync((int)CmbGradeDiscipline.SelectedValue);
             
             if (student != null && discipline != null)
             {
@@ -150,9 +205,10 @@ public partial class TeacherPanel : UserControl
             }
 
             CmbStudentForGrade.SelectedIndex = -1;
-            CmbDisciplineForGrade.SelectedIndex = -1;
+            CmbGradeDiscipline.SelectedIndex = -1;
             CmbGradeType.SelectedIndex = -1;
             TxtGradeValue.Clear();
+            AddGradePopup.IsOpen = false;
 
             await LoadGradesAsync();
             MessageBox.Show($"Оценка добавлена. Уведомление отправлено студенту.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -161,6 +217,38 @@ public partial class TeacherPanel : UserControl
         {
             MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
+
+    private void BtnOpenAddGradeForm_Click(object sender, RoutedEventArgs e)
+    {
+        // Загружаем данные в комбобоксы перед открытием
+        LoadGroupDisciplineFilters();
+        AddGradePopup.IsOpen = true;
+    }
+
+    private async void LoadGroupDisciplineFilters()
+    {
+        await using var db = new AppDbContext();
+        var groups = await db.Groups.AsNoTracking().ToListAsync();
+        var disciplines = await db.Disciplines.AsNoTracking().ToListAsync();
+
+        CmbGradeGroup.ItemsSource = groups;
+        CmbGradeGroup.DisplayMemberPath = "Name";
+        CmbGradeGroup.SelectedValuePath = "Id";
+
+        CmbGradeDiscipline.ItemsSource = disciplines;
+        CmbGradeDiscipline.DisplayMemberPath = "Name";
+        CmbGradeDiscipline.SelectedValuePath = "Id";
+    }
+
+    private void BtnCancelGrade_Click(object sender, RoutedEventArgs e)
+    {
+        AddGradePopup.IsOpen = false;
+        CmbGradeGroup.SelectedIndex = -1;
+        CmbGradeDiscipline.SelectedIndex = -1;
+        CmbStudentForGrade.SelectedIndex = -1;
+        CmbGradeType.SelectedIndex = -1;
+        TxtGradeValue.Clear();
     }
 
     private async void BtnExportGrades_Click(object sender, RoutedEventArgs e)

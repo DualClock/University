@@ -78,7 +78,7 @@ namespace UniversitySystem
             else if (RbacService.CurrentUserRole.ToLower() == "teacher")
             {
                 QuickAction1.Content = "Ввод оценок";
-                QuickAction1.Click += (s, e) => ShowControl(new GradeManagementControl());
+                QuickAction1.Click += (s, e) => ShowControl(new TeacherPanel());
                 QuickAction2.Content = "Просмотреть расписание";
                 QuickAction2.Click += (s, e) => ShowControl(new ScheduleControl());
             }
@@ -103,7 +103,7 @@ namespace UniversitySystem
         private void OpenDisciplineManagement(object sender, RoutedEventArgs e) => ShowControl(new DisciplineManagementControl());
         private void OpenUserManagement(object sender, RoutedEventArgs e) => ShowControl(new UserManagementControl());
         private void OpenCurriculumManagement(object sender, RoutedEventArgs e) => ShowControl(new CurriculumManagementControl());
-        private void OpenGradeManagement(object sender, RoutedEventArgs e) => ShowControl(new GradeManagementControl());
+        private void OpenGradeManagement(object sender, RoutedEventArgs e) => ShowControl(new TeacherPanel());
         private void OpenSchedule(object sender, RoutedEventArgs e) => ShowControl(new ScheduleControl());
         private void OpenExport(object sender, RoutedEventArgs e) => ShowControl(new ExportControl());
         private void OpenGradesView(object sender, RoutedEventArgs e) => ShowControl(new GradesViewControl());

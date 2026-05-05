@@ -36,7 +36,7 @@
                         <ComboBoxItem Content="8"/>
                     </ComboBox>
                     <TextBox x:Name="YearTextBox" Width="120" Padding="8" Background="#F5F5F5" Margin="10,0,0,0" materialDesign:HintAssist.Hint="Учебный год" Text="2025/2026"/>
-                    <Button Content="🔍 Загрузить" Background="#4A00E0" Foreground="White" Padding="15,8" BorderThickness="0" Margin="15,0,0,0" Click="LoadGrades_Click"/>
+                    <Button Content="➕ Добавить оценку" Background="#28A745" Foreground="White" Padding="15,8" BorderThickness="0" Margin="15,0,0,0" Click="AddGrade_Click"/>
                 </StackPanel>
             </Border>
             <Border Grid.Row="1" Background="White" CornerRadius="12" Padding="20" Margin="0,15,0,0">
